@@ -22,40 +22,6 @@ h1 {
 
 </style>
 <body>
-    <h1>Metaverse Sufferer</h1>
-	<hr>
-	<span id ="suffer"</span>	
-	<script type="text/javascript">
-const apiUrl = 'https://api.tmwstw.io/game_plots_with_players';	// URL to grab this stuff from
-
-playIt();
-	
-async function getThing() {
-		const xlabels = [];	
-		const players = [];
-		const response = await fetch(apiUrl,{mode: 'cors'})
-		const data = await response.json();
-		console.log(data)
-		for (const [key, value] of Object.entries(data)) {
-			xlabels.push(`${key}`)
-			players.push(`${value}`)
-		}
-		return{xlabels,players}
-	};
-
-async function playIt() {
-	const links = [];
-	const vic = [];
-	const opensea = [];
-	const img = document.createElement("img");
-	const data = await getThing();
-	//console.log(data.xlabels,data.players);
-	for (let i = 0; i < data.xlabels.length; i++) { 
-		links.push(`<a href="https://opensea.io/assets/ethereum/0xeed10864e9fd813d12a0f40eb5f73ff2d31b2abb/${data.xlabels[i]}"><img src="https://meta.tmwstw.io/preview_plots_${data.xlabels[i]}.jpg" width="250" height="250"></a>`)
-		vic.push(`occ ${data.players[i]}x `);
-		suffer.innerHTML +=(`${links[i]} ${vic[i]} `)
-	}
-}
-</script>
+    <a href ="./Tracker/index.html"><h1>Metaverse Sufferer</h1></a>
 </body>
 </html>
