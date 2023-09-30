@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEATH FAUCET TMWSTW</title>
+    <script defer >
+	
+let apiUrl = "https://api.tmwstw.io/game_death_list"; // URL to grab this stuff from
+
+async function getStuff() {
+    const response = await fetch(apiUrl);
+    const data = await response.json();
+	fixed_list = data.reverse()
+    for (let i = 0; i < 10; i++) {
+      plotter.innerHTML += `<h2>Victim- ` + fixed_list[i].victim + `</h2>` + `<h4>died on ` + fixed_list[i].date  + ` local game time via gunshot wounds</h4>` + `<h3>Killer- ` + fixed_list[i].killer  + `</h3><hr>`
+	}
+}
+getStuff()
+</script>
+</head>
+<style>
+html
+ {
+    margin: 10px;
+     background-color: white;
+}
+body
+ {
+	padding: 10px;
+	background-color: green;
+}
+
+h1 {
+    color: black;
+    margin-left: 48px;
+    font-size: 48px;
+}
+
+h2 {
+    color: white;
+	background-color:green;
+    font-size: 24px;
+}
+
+h3 {
+    color: white;
+	background-color:green;
+    font-size: 24px;
+}
+
+h4{
+	font-size: 24px;
+	background-color:white;
+	color: black;
+}
+
+</style>
+<body>
+    <h1> Deaths in The Man Who Sold The World Metaverse</h1>
+			<p></p>
+			<hr>
+			<span id ="plotter"</span>			
+</body>
+</html>
