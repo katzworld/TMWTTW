@@ -12,13 +12,10 @@ jobs:
       uses: actions/checkout@v4
     - name: setup git config
       run: |
-          # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
+          # 'GitHub Actions Bot' with no email by default
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
-
-    - name: commit
-      run: |
           wget -X GET https://api.tmwstw.io/faucet_data -O current.json
           git add current.json
-          git commit -m "new data commit"
-          git push origin main:API
+          git commit -snm "new data commit" || true
+          git push origin main:API ||true
