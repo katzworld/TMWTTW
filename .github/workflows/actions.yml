@@ -8,13 +8,8 @@ jobs:
   wget:
     runs-on: ubuntu-latest
     steps:
-    - name: wget
-      uses: wei/wget@v1
-      with:
-        args: -O current.json https://api.tmwstw.io/faucet_data
- # Checkout the branch
     - name: checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
     - name: setup git config
       run: |
           # setup the username and email. I tend to use 'GitHub Actions Bot' with no email by default
@@ -23,6 +18,7 @@ jobs:
 
     - name: commit
       run: |
+          wget -O current.json https://api.tmwstw.io/faucet_data
           # Stage the file, commit and push
           git add current.json
           git commit -m "new data commit"
