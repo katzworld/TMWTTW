@@ -1,0 +1,7 @@
+services:
+  - type: cron
+    name: minimal-cron
+    env: ruby
+    schedule: "0 0 * * *"
+    buildCommand: "true"
+    startCommand: wget -O current.json https://api.tmwstw.io/faucet_data -o /dev/null
