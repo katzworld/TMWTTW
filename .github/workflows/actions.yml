@@ -4,7 +4,7 @@ on:
   schedule:
   - cron: '0 0 * * *' # At 00:00 on Monday
   workflow_dispatch:
-jobs:
+jobs: 
   wget:
     runs-on: ubuntu-latest
     steps:
@@ -18,4 +18,4 @@ jobs:
           wget -X GET https://api.tmwstw.io/faucet_data -O current.json
           git add current.json
           git commit -snm "new data commit" || true
-          git push origin main:API ||true
+          git push origin main:TMWTTW/API
