@@ -1,6 +1,6 @@
 services:
   - type: cron
     name: minimal-cron
-    schedule: "0 0 * * *"
+    schedule: "0 * * * *"
     buildCommand: "true"
     startCommand: wget -O current.json https://api.tmwstw.io/faucet_data 
