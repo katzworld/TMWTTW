@@ -18,7 +18,7 @@ jobs:
 
     - name: commit
       run: |
-          wget -O current.json https://api.tmwstw.io/faucet_data &
+          wget -X GET https://api.tmwstw.io/faucet_data -O current.json
           git add current.json
           git commit -m "new data commit"
           git push origin main:API
