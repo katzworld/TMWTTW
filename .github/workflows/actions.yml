@@ -18,4 +18,4 @@ jobs:
           wget -X GET https://api.tmwstw.io/faucet_data -O current.json
           git add current.json
           git commit -snm "new data commit" || true
-          git push origin main API/current.json
+          git push origin main 
