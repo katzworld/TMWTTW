@@ -16,6 +16,6 @@ jobs:
           git config user.name "GitHub Actions Bot"
           git config user.email "<>"
           wget -X GET https://api.tmwstw.io/faucet_data -O current.json
-          git add current.json
+          git add API/current.json
           git commit -snm "new data commit" || true
-          git push origin main API
+          git push origin main 
