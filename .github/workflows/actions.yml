@@ -17,6 +17,5 @@ jobs:
           git config user.email "<>"
           wget -X GET https://api.tmwstw.io/faucet_data -O current.json
           git add current.json
-          git remote add origin /path/to/repos/myrepo.git
           git commit -snm "new data commit" || true
           git push origin main API/current.json
