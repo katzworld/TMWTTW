@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-	 <meta http-equiv="refresh" content="10">
+	  <meta http-equiv="refresh" content="10">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sufferers in Metaverse</title>
 	</head>
@@ -26,7 +26,6 @@ h1 {
 	<hr>
 	<div><span id = "total"></span></div>
 	<div><span id = "suffer"></span></div>
-	<hr>
 	<script type="text/javascript">
 const apiUrl = 'https://api.tmwstw.io/game_plots_with_players';	// URL to grab this stuff from
 
@@ -37,10 +36,17 @@ async function getThing() {
 		const players = [];
 		const response = await fetch(apiUrl,{mode: 'cors'})
 		const data = await response.json();
-		console.log(data)
+		//console.log(data)
 		for (const [key, value] of Object.entries(data)) {
 			xlabels.push(`${key}`)
 			players.push(`${value}`)
+		}
+		const suffers = Object.values(data).reduce((a, b) => a + b,0);
+		//console.log(suffers); // 6
+		if(suffers == 0){
+			total.innerHTML = `no suffering to be had`;
+		} else 
+		{	total.innerHTML = `suffers in world ${suffers}`;
 		}
 		return{xlabels,players}
 	};
@@ -52,12 +58,12 @@ async function playIt() {
 	const img = document.createElement("img");
 	const data = await getThing();
 	//console.log(data.xlabels,data.players);
-	total.innerText += `suffers in world ${data.xlabels.length}`;
 	for (let i = 0; i < data.xlabels.length; i++) { 
 		links.push(`<a href="https://opensea.io/assets/ethereum/0xeed10864e9fd813d12a0f40eb5f73ff2d31b2abb/${data.xlabels[i]}"><img src="https://meta.tmwstw.io/preview_plots_${data.xlabels[i]}.jpg" width="250" height="250"></a>`)
 		vic.push(`occ ${data.players[i]}x `);
 		suffer.innerHTML +=(`${links[i]} ${vic[i]} `)
 	}
+	
 }
 </script>
 </body>
