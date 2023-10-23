@@ -24,6 +24,7 @@ h1 {
 <body>
     <h1>Metaverse Sufferer</h1>
 	<hr>
+	<span id = "total"</span>
 	<span id ="suffer"</span>	
 	<script type="text/javascript">
 const apiUrl = 'https://api.tmwstw.io/game_plots_with_players';	// URL to grab this stuff from
@@ -50,6 +51,7 @@ async function playIt() {
 	const img = document.createElement("img");
 	const data = await getThing();
 	//console.log(data.xlabels,data.players);
+	total.innerTEXT += `${data.xlabels.length} total suffer`;
 	for (let i = 0; i < data.xlabels.length; i++) { 
 		links.push(`<a href="https://opensea.io/assets/ethereum/0xeed10864e9fd813d12a0f40eb5f73ff2d31b2abb/${data.xlabels[i]}"><img src="https://meta.tmwstw.io/preview_plots_${data.xlabels[i]}.jpg" width="250" height="250"></a>`)
 		vic.push(`occ ${data.players[i]}x `);
