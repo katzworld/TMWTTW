@@ -6,56 +6,43 @@
 	<title>Bingo Card</title>
 
 	<!-- zimjs.com - JavaScript Canvas Framework -->
-
-	<script type=module>
-
-//stuff needed for the other things 
+	<script type=module defer>
 import zim from "https://zimjs.org/cdn/015/zim";
-
 const month = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 const d = new Date();
 let monName = month[d.getUTCMonth()];
 let dayMon = d.getUTCDate()
 let yarHo = d.getUTCFullYear();
 let seedFor = monName + dayMon + yarHo; 
-//seedRandom(seedFor) // should change daily 
+seedRandom(seedFor) // should change daily 
 const iter = rand(0,9)
 zog(seedFor +" = 533d Date()=>" + iter )
 const colorFulThings = [orange, green, pink, blue, brown, purple, grey, gray, granite, tin, pewter, silver, fog, mist, light, moon, lighter, white]
 function coloring() { return (pluck(colorFulThings,true))}
-// See Docs under Frame for FIT, FILL, FULL, and TAG
 
 
-let api = []
+new Frame(FIT, 1024, 768, light, dark, setPage);
 
-function grabData() {
+async function getTypeFaucet() {
 	const baseApiUrl = 'https://api.tmwstw.io/'
-	const typesFaucet = ['faucet_state=bob','faucet_state=slag','faucet_state=grease'];
+	const typesFaucet = ['faucet_state=bob','faucet_state=slag','faucet_state=grease']
 	let apiType = pluck(typesFaucet)
 	let apiUrl = baseApiUrl+apiType
 	zog('Showing Data for ' + apiUrl)
-	//async(`https://zimjs.org/cdn/jsonp.php?api=${apiUrl}&callback=async.submitData`, submitData);
-	new Ajax().get(apiUrl,submitData);
-}
+	const response = await fetch(apiUrl);
+                const data = await response.json();
+				return data
+            }
+let api = []
 
-function submitData(){
-	let parsedthing = data.replace(/&/g, ',');
-	api.push(parsedthing.split(',').splice(1))
-	//zog(parsJson)
-}
-
-
-new Frame(FIT, 1024, 768, light, dark, ready);
-function ready() {
-grabData()
-// given F (Frame), S (Stage), W (width), H (height)
+async function setPage() {
+	let faucets = await getTypeFaucet()           
+	faucets.forEach(element => {
+		api.push(element[0])
+		});
 const bingoSqure = new Rectangle({width:W/3, height:H/3, color:coloring,corner:25,borderWidth:25})
 
 const tile = new Tile({obj:bingoSqure, cols:3, rows:3, height:H*.9, width:W*.9}).center();
-//Label(text, size, font, color, rollColor, shadowColor, shadowBlur, align, valign, bold, italic, variant, lineWidth, lineHeight, 
-//backing, outlineColor, outlineWidth, backgroundColor, backgroundBorderColor, backgroundBorderWidth, corner, backgroundDashed, 
-//padding, paddingH, paddingV, shiftH, shiftV, rollPersist, labelWidth, labelHeight, maxSize, splitWords, style, group, inherit)
-
 const bingoSone = new Label({text:pluck(api,true),size:60})
 const bingoStwo = new Label({text:pluck(api,true),size:60})
 const bingoSthr = new Label({text:pluck(api,true),size:60})
@@ -70,11 +57,11 @@ const tile2 = new Tile({
 	obj:[bingoSone,bingoStwo, bingoSthr,bingoSfor,bingoSfiv,bingoSsix,bingoSsev,bingoSeig,bingoSnine],
 	unique:true,
 	 cols:3, rows:3, height:H*.9, width:W*.9}).center();
-//Circle(radius, color, borderColor, borderWidth, dashed, percent, percentClose, strokeObj, style, group, inherit)
 const tile3 = new Circle({radius:W/9, color:coloring, borderWidth:10,dashed:true,borderColor: yellow}).loc(H/3,W/3).drag();    
 new Label({text:"FREE SPACE", bold:true,color:red, align:CENTER, size:tile3.radius/4}).centerReg(tile3);
+S.update();
 }
- // end ready
+	
 
 </script>
 	<meta name="viewport" content="width=device-width, user-scalable=no" />
