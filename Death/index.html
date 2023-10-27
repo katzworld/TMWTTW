@@ -60,7 +60,7 @@
 
             async function setPage() {
                 const fixed_list = await getDeathApi()
-                if (fixed_list.length == 0) { totdeaths.innerText = `no deaths bullets are FREE? api reset` }
+                if (fixed_list.length == 0) { totdeaths.innerText = ` 0 = no deaths bullets are still FREE right ? ` }
                 else {
                     totdeaths.innerText = `${fixed_list.length}`
                     for (let i = 0; i < fixed_list.length; i++) {
