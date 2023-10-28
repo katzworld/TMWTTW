@@ -49,7 +49,7 @@
             async function getDeathApi() {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
-                return data
+                return data.reverse()
             }
 
             async function walletRes(wallet_id) {
@@ -60,7 +60,7 @@
 
             async function setPage() {
                 const fixed_list = await getDeathApi()
-                if (fixed_list.length == 0) { totdeaths.innerText = ` 0 = no deaths bullets are still FREE right ? ` }
+                if (fixed_list.length == 0) { totdeaths.innerText = `no deaths bullets are FREE? api reset` }
                 else {
                     totdeaths.innerText = `${fixed_list.length}`
                     for (let i = 0; i < fixed_list.length; i++) {
