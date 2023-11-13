@@ -10,13 +10,20 @@
 <body>
     <h1> Deaths in The Man Who Sold The World Metaverse</h1>
     <h2>
-        <p>total deaths on record <span id="totdeaths"></p> *subject to witness accounts
+        <p>total deaths on record <span id="totdeaths"></p> *subject to witness accounts</p>
+        <input type="text" name="name" id="walletkdr" placeholder="wallet.eth to filter"><span id="kdr">
+        <button type="button" id="button">K/D ratio!</button>
     </h2>
     <hr>
     <span id="plotter">
         <script defer>
+
             const apiReso = 'https://api.tmwstw.io/get_ens@' //ens resolv returns a nice text
             const apiUrl = 'https://api.tmwstw.io/game_death_list'; // death faucet tap that ~ !
+            const inputBox = document.getElementById("walletkdr");
+            const button = document.getElementById("button")
+            button.style.display = 'none';
+            inputBox.style.display = 'none'
             const causeOfDeath =
                 [
                     'lack of skill basically',
@@ -55,6 +62,7 @@
             async function walletRes(wallet_id) {
                 const response = await fetch(apiReso + wallet_id);
                 const data = await response.text();
+
                 return data.toLocaleUpperCase() //MFDOOM! ALL CAPS
             }
 
@@ -63,14 +71,29 @@
                 if (fixed_list.length == 0) { totdeaths.innerText = `no deaths bullets are FREE? api reset` }
                 else {
                     totdeaths.innerText = `${fixed_list.length}`
-                    for (let i = 0; i < fixed_list.length; i++) {
+
+                    for (let i = 0; i < fixed_list.length - 1; i++) {
+                        //for (let i = 0; i < 25; i++) {
                         let words = causeOfDeath[Math.floor(Math.random() * causeOfDeath.length)];
                         let vic = await walletRes((fixed_list[i].victim))
                         let killer = await walletRes((fixed_list[i].killer))
                         plotter.innerHTML += `<h2>Victim- ` + vic + ':  ' + words + `</h2>` + `<h4>died on ` + fixed_list[i].date + ` local game time  </h4>` + `<h2>Killer- ` + killer + ': slinging that chopper' + `</h2><hr>`
                     }
                 }
+                inputBox.style.display = 'block'
+                button.style.display = 'block'
             }
+            button.addEventListener("click", function () {
+                const textBox = inputBox.value.toLocaleUpperCase();
+                const Ksearch = new RegExp('Killer- ' + textBox, 'gi');
+                const Vsearch = new RegExp('Victim- ' + textBox, 'gi');
+                let kRatio = document.querySelector("#plotter").textContent.match(Ksearch).length
+                let dRatio = document.querySelector("#plotter").textContent.match(Vsearch).length
+                //KD = kills / deaths0
+                let kdRatio = (kRatio / dRatio).toFixed(3);
+                kdr.innerHTML = `<h3>` + textBox + "  kdr: " + kRatio + " / " + dRatio + " = " + kdRatio + `</h3>`
+                button.style.display = 'block'
+            })
             setPage()
 
         </script>
