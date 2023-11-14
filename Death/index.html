@@ -12,8 +12,9 @@
     <h2>
         <p>total deaths on record <span id="totdeaths"></p> *subject to witness accounts</p>
         <br>
-        <input type="text" name="name" id="walletkdr" placeholder="WALLET.ETH"><span id="kdr">
-            <button type="button" id="button">K/D ratio!</button>
+        <input type="text" name="name" id="walletkdr" placeholder="WALLET.ETH">
+        <button type="button" id="button">K/D ratio!</button>
+        <span id="kdr"></span>
     </h2>
     <hr>
     <span id="plotter">
@@ -74,26 +75,38 @@
                     totdeaths.innerText = `${fixed_list.length}`
 
                     for (let i = 0; i < fixed_list.length - 1; i++) {
-                        //for (let i = 0; i < 25; i++) {
+                        //for (let i = 0; i < 10; i++) {
+
                         let words = causeOfDeath[Math.floor(Math.random() * causeOfDeath.length)];
+                        kdr.innerHTML += "."
+                        kdr.style.color = 'red'
                         let vic = await walletRes((fixed_list[i].victim))
                         let killer = await walletRes((fixed_list[i].killer))
                         plotter.innerHTML += `<h2>Victim- ` + vic + ':  ' + words + `</h2>` + `<h4>died on ` + fixed_list[i].date + ` local game time  </h4>` + `<h2>Killer- ` + killer + ': slinging that chopper' + `</h2><hr>`
                     }
                 }
+                kdr.innerHTML = ''
+                kdr.style.color = 'blue'
                 inputBox.style.display = 'block'
                 button.style.display = 'block'
             }
+            let kRatio = 0
+            let dRatio = 0
+
             button.addEventListener("click", function () {
                 const textBox = inputBox.value.toLocaleUpperCase();
                 const Ksearch = new RegExp('Killer- ' + textBox, 'gi');
                 const Vsearch = new RegExp('Victim- ' + textBox, 'gi');
-                let kRatio = document.querySelector("#plotter").textContent.match(Ksearch).length
-                let dRatio = document.querySelector("#plotter").textContent.match(Vsearch).length
-                //KD = kills / deaths0
-                let kdRatio = (kRatio / dRatio).toFixed(3);
-                kdr.innerHTML = `<h3>` + textBox + "  kdr: " + kRatio + " / " + dRatio + " = " + kdRatio + `</h3>`
-                button.style.display = 'block'
+                try {
+                    kRatio = document.querySelector("#plotter").textContent.match(Ksearch).length
+                    dRatio = document.querySelector("#plotter").textContent.match(Vsearch).length
+                    let kdRatio = (kRatio / dRatio).toFixed(3);
+                    kdr.innerHTML = `<h3>` + textBox + "  kdr: " + kRatio + " / " + dRatio + " = " + kdRatio + `</h3>`
+                    kdr.style.color = 'blue'
+                } catch (error) {
+                    kdr.innerHTML = `<h3>WTF Omar got that fool last week ? ......not on this list  </h3>`
+                    kdr.style.color = 'red'
+                }
             })
             setPage()
 
