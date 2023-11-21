@@ -7,6 +7,7 @@
     <style>
         body {
             background-color: black;
+            color: white;
         }
 
         h3 {
@@ -55,7 +56,6 @@
     async function walletRes(wallet_id) {
         const response = await fetch(apiReso + wallet_id);
         const data = await response.text();
-
         return data.toLocaleUpperCase() //MFDOOM! ALL CAPS
     }
 
@@ -98,7 +98,7 @@
                 gr_id.style.display = 'block';
             }
         }
-        mansion_id.innerHTML = await walletRes(mansion)
+        mansion_id.innerHTML = await walletRes(mansion[0])
         plat_id.innerHTML = `${owners.length}`
         nft_id.innerHTML = `${fixed_list.all_nfts.length}`
         walls_id.innerHTML = `${walls.length}`
@@ -109,9 +109,7 @@
             let ownersBuild = await walletRes((uniqueValues[i]))
             owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
         }
-
     }
-
 
     const inputBox = document.getElementById("plat");
     const button = document.querySelector("#button")
@@ -131,6 +129,5 @@
 </script>
 
 <meta name="viewport" content="width=device-width, user-scalable=no" />
-
 
 </html>
