@@ -20,10 +20,11 @@
 </head>
 
 <body>
-    <input type="number" name="plat" id="plat" placeholder="Plat #">
-    <button type="button" id="button">Check</button>
-    <br>
-    <p><span id="output">
+    <p>
+        <input type="number" name="plat" id="plat" placeholder="Plat #">
+        <button type="button" id="button">Check</button>
+        <br>
+        <span id="output">
             <span id="lvr_id"> LVR in Plat : YES</span><span id="pb_id"> PostBox in Plat : YES </span><span id="gr_id">
                 Grease Refinery
                 in Plat : YES</span>
@@ -34,7 +35,8 @@
             Walls in Plat : <span id="walls_id"></span> <br>
             NFT in Plat : <span id="nft_id"></span><br>
             Uniqe Owners in Plat : <span id="plat_split"></span> * (list below doesnt include non-resolvable ens )
-        </span></p>
+        </span>
+    </p>
     <hr>
 
     <span id="owners_html"></span>
@@ -70,7 +72,7 @@
         let walls = []
         console.log(fixed_list)
 
-        for (let i = 0; i < fixed_list.buildings.length - 1; i++) {
+        for (let i = 0; i < fixed_list.buildings.length; i++) {
             if (fixed_list.buildings[i].type == '2') {
                 owners.push(fixed_list.buildings[i].owner)
                 //owners.push(fixed_list.buidlings[i].owner)
@@ -103,7 +105,7 @@
         output.style.display = 'block'
         const uniqueValues = [...new Set(owners)];
         plat_split.innerHTML = ` ${uniqueValues.length}`
-        for (let i = 0; i < uniqueValues.length - 1; i++) {
+        for (let i = 0; i < uniqueValues.length; i++) {
             let ownersBuild = await walletRes((uniqueValues[i]))
             owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
         }
