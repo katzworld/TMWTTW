@@ -69,7 +69,7 @@
         let mansion = []
         let walls = []
         console.log(fixed_list)
-        plat_id.innerHTML = `${fixed_list.buildings.length}`
+
         for (let i = 0; i < fixed_list.buildings.length - 1; i++) {
             if (fixed_list.buildings[i].type == '2') {
                 owners.push(fixed_list.buildings[i].owner)
@@ -96,27 +96,18 @@
                 gr_id.style.display = 'block';
             }
         }
-        // for (let i = 0; i < mansion.length - 1; i++) {
         mansion_id.innerHTML = await walletRes(mansion)
-        // }
-
-
-
+        plat_id.innerHTML = `${owners.length}`
         nft_id.innerHTML = `${fixed_list.all_nfts.length}`
         walls_id.innerHTML = `${walls.length}`
-
         output.style.display = 'block'
-
         const uniqueValues = [...new Set(owners)];
+        plat_split.innerHTML = ` ${uniqueValues.length}`
         for (let i = 0; i < uniqueValues.length - 1; i++) {
             let ownersBuild = await walletRes((uniqueValues[i]))
-
-
-
-            plat_split.innerHTML = ` ${uniqueValues.length}`
             owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
-
         }
+
     }
 
 
