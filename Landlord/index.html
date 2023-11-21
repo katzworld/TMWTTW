@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>LandLord Utils</title>
+    <style>
+        body {
+            background-color: black;
+        }
+
+        h3 {
+            color: blue;
+        }
+
+        p {
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <input type="number" name="plat" id="plat" placeholder="Plat #">
+    <button type="button" id="button">Check</button>
+    <br>
+    <p><span id="output">
+            <span id="lvr_id"> LVR in Plat : YES</span><span id="pb_id"> PostBox in Plat : YES </span><span id="gr_id">
+                Grease Refinery
+                in Plat : YES</span>
+            <br>
+            Residental Units in Plat : <span id="plat_id"></span> // Mansion Owner in Plat : <span
+                id="mansion_id"></span>
+            <br>
+            Walls in Plat : <span id="walls_id"></span> <br>
+            NFT in Plat : <span id="nft_id"></span><br>
+            Uniqe Owners in Plat : <span id="plat_split"></span> * (list below doesnt include non-resolvable ens )
+        </span></p>
+    <hr>
+
+    <span id="owners_html"></span>
+</body>
+<script defer>
+    output.style.display = 'none'
+    pb_id.style.display = 'none';
+    gr_id.style.display = 'none';
+    lvr_id.style.display = 'none';
+
+
+    const apiReso = 'https://api.tmwstw.io/get_ens@' //ens resolv returns a nice text
+    const apiURL = 'https://buildrouter.tmwstw.io:21823/'
+
+
+    async function walletRes(wallet_id) {
+        const response = await fetch(apiReso + wallet_id);
+        const data = await response.text();
+
+        return data.toLocaleUpperCase() //MFDOOM! ALL CAPS
+    }
+
+    async function getBuildApi(plat) {
+        const response = await fetch(apiURL + plat);
+        const data = await response.json();
+        return data
+    }
+
+    async function setPage(plata) {
+        const fixed_list = await getBuildApi(plata)
+        let owners = []
+        let mansion = []
+        let walls = []
+        console.log(fixed_list)
+        plat_id.innerHTML = `${fixed_list.buildings.length}`
+        for (let i = 0; i < fixed_list.buildings.length - 1; i++) {
+            if (fixed_list.buildings[i].type == '2') {
+                owners.push(fixed_list.buildings[i].owner)
+                //owners.push(fixed_list.buidlings[i].owner)
+            }
+            if (fixed_list.buildings[i].type == '3') {
+
+                mansion.push(fixed_list.buildings[i].owner)
+                //mansion
+                //owners.push(fixed_list.buidlings[i].owner)
+            }
+
+            if (fixed_list.buildings[i].type == '5') {
+                lvr_id.style.display = 'block';
+            }
+            if (fixed_list.buildings[i].type == '8') {
+                //walls
+                walls.push(fixed_list.buildings[i].owner)
+            }
+            if (fixed_list.buildings[i].type == '19') {
+                pb_id.style.display = 'block';
+            }
+            if (fixed_list.buildings[i].type == '20') {
+                gr_id.style.display = 'block';
+            }
+        }
+        // for (let i = 0; i < mansion.length - 1; i++) {
+        mansion_id.innerHTML = await walletRes(mansion)
+        // }
+
+
+
+        nft_id.innerHTML = `${fixed_list.all_nfts.length}`
+        walls_id.innerHTML = `${walls.length}`
+
+        output.style.display = 'block'
+
+        const uniqueValues = [...new Set(owners)];
+        for (let i = 0; i < uniqueValues.length - 1; i++) {
+            let ownersBuild = await walletRes((uniqueValues[i]))
+
+
+
+            plat_split.innerHTML = ` ${uniqueValues.length}`
+            owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
+
+        }
+    }
+
+
+    const inputBox = document.getElementById("plat");
+    const button = document.querySelector("#button")
+    button.addEventListener('click', function () {
+        output.style.display = 'none';
+        pb_id.style.display = 'none';
+        gr_id.style.display = 'none';
+        lvr_id.style.display = 'none';
+        const textBox = inputBox.value;
+        owners_html.innerHTML = ''
+        console.log(textBox)
+        setPage(textBox)
+
+    });
+
+
+</script>
+
+<meta name="viewport" content="width=device-width, user-scalable=no" />
+
+
+</html>
