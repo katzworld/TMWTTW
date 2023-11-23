@@ -4,18 +4,34 @@
 <head>
     <meta charset="utf-8" />
     <title>LandLord Utils</title>
+    <!--  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro"> -->
     <style>
         body {
-            background-color: black;
-            color: white;
+            /* font-family: 'Crimson Pro', serif; */
+            font-size: 20px;
+            background-color: #49494b;
+            color: #8e8e90
+        }
+
+        .container {
+            column-width: 250px;
+            column-span: all;
         }
 
         h3 {
-            color: blue;
+            font-size: 20px;
+            color: #d1bfa7;
         }
 
+        h4 {
+            font-size: 20px;
+            color: #bd8c7d;
+        }
+
+
         p {
-            color: red;
+            font-size: 20px;
+            color: #8e8e90;
         }
     </style>
 </head>
@@ -30,19 +46,26 @@
                 Grease Refinery
                 in Plat : YES</span>
             <br>
-            Residental Units in Plat : <span id="plat_id"></span> // Mansion Owner in Plat : <span
-                id="mansion_id"></span>
-            <br>
+            Residental Units in Plat : <span id="plat_id"></span> <br><span id="mansion_plat">Mansion Owner on Plat :
+                <span id="mansion_id"></span></span>
+
             Walls in Plat : <span id="walls_id"></span> <br>
             NFT in Plat : <span id="nft_id"></span><br>
-            Uniqe Owners in Plat : <span id="plat_split"></span> * (list below doesnt include non-resolvable ens )
+            <span id="plat_split"></span> * (list below doesnt include non-resolvable ens )
         </span>
     </p>
-    <hr>
+    <div class="container">
 
-    <span id="owners_html"></span>
+        <span id="renter_html"></span>
+
+    </div>
+    <div class="container">
+
+        <span id="owners_html"></span>
+    </div>
 </body>
 <script defer>
+    mansion_plat.style.display = 'none';
     output.style.display = 'none'
     pb_id.style.display = 'none';
     gr_id.style.display = 'none';
@@ -67,12 +90,15 @@
 
     async function setPage(plata) {
         const fixed_list = await getBuildApi(plata)
-        let owners = []
-        let mansion = []
-        let walls = []
+        const owners = []
+        const renter = []
+        const mansion = []
+        let walls = 0;
         console.log(fixed_list)
+        let emptyflr = 0;
 
         for (let i = 0; i < fixed_list.buildings.length; i++) {
+
             if (fixed_list.buildings[i].type == '2') {
                 owners.push(fixed_list.buildings[i].owner)
                 //owners.push(fixed_list.buidlings[i].owner)
@@ -80,16 +106,19 @@
             if (fixed_list.buildings[i].type == '3') {
 
                 mansion.push(fixed_list.buildings[i].owner)
-                //mansion
-                //owners.push(fixed_list.buidlings[i].owner)
+                mansion_plat.style.display = 'block';
             }
 
             if (fixed_list.buildings[i].type == '5') {
                 lvr_id.style.display = 'block';
             }
+            if (fixed_list.buildings[i].type == '7') {
+                emptyflr++;
+            }
+
             if (fixed_list.buildings[i].type == '8') {
-                //walls
-                walls.push(fixed_list.buildings[i].owner)
+                walls++;
+                //walls.push(fixed_list.buildings[i].owner)
             }
             if (fixed_list.buildings[i].type == '19') {
                 pb_id.style.display = 'block';
@@ -97,30 +126,62 @@
             if (fixed_list.buildings[i].type == '20') {
                 gr_id.style.display = 'block';
             }
+            if (fixed_list.buildings[i].renter !== '0x0000000000000000000000000000000000000000') {
+                renter.push(fixed_list.buildings[i].renter)
+
+            }
+
         }
         mansion_id.innerHTML = await walletRes(mansion[0])
-        plat_id.innerHTML = `${owners.length}`
         nft_id.innerHTML = `${fixed_list.all_nfts.length}`
-        walls_id.innerHTML = `${walls.length}`
+        walls_id.innerHTML = `${walls}`
         output.style.display = 'block'
-        const uniqueValues = [...new Set(owners)];
-        plat_split.innerHTML = ` ${uniqueValues.length}`
-        for (let i = 0; i < uniqueValues.length; i++) {
-            let ownersBuild = await walletRes((uniqueValues[i]))
-            owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
+
+        if (renter.length !== 0) {
+            let count = 0;
+            for (const value of renter) {
+                if (value !== false) {
+                    count++;
+                }
+            }
+            plat_split.innerHTML += ` <h4>Renter(s): ${count} / ${renter.length} </h4>`
+            const uniqueRenters = [...new Set(renter)];
+            //plat_split.innerHTML = `${uniqueRenters.length}`
+            for (let i = 0; i < uniqueRenters.length - 1; i++) {
+                let renterBuild = await walletRes((uniqueRenters[i]))
+                renter_html.innerHTML += `<h4>` + renterBuild + `</h4>`
+            }
         }
+        plat_split.innerHTML += ` <h4> Empty Floor(s) : ${emptyflr} </h4>`
+
+        plat_id.innerHTML = ` ${owners.length}`
+
+        const uniqueOwners = [...new Set(owners)];
+        plat_split.innerHTML += `<h3> Uniqe Owner(s) in Plat : ${uniqueOwners.length}</h3>`
+        for (let i = 0; i < uniqueOwners.length; i++) {
+            let ownersBuild = await walletRes((uniqueOwners[i]))
+            if (ownersBuild == '0X0000000000000000000000000000000000000000') {
+                owners_html.innerHTML += `<h3>` + '**BURNED**' + `</h3>`
+            } else {
+                owners_html.innerHTML += `<h3>` + ownersBuild + `</h3>`
+            }
+        }
+
     }
 
     const inputBox = document.getElementById("plat");
     const button = document.querySelector("#button")
     button.addEventListener('click', function () {
         output.style.display = 'none';
+        mansion_plat.style.display = 'none';
         pb_id.style.display = 'none';
         gr_id.style.display = 'none';
         lvr_id.style.display = 'none';
         const textBox = inputBox.value;
         owners_html.innerHTML = ''
-        console.log(textBox)
+        renter_html.innerHTML = ''
+        plat_split.innerHTML = ''
+        //console.log(textBox)
         setPage(textBox)
 
     });
