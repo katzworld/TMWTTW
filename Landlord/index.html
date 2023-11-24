@@ -4,10 +4,9 @@
 <head>
     <meta charset="utf-8" />
     <title>LandLord Utils</title>
-    <!--  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Crimson+Pro"> -->
+    
     <style>
         body {
-            /* font-family: 'Crimson Pro', serif; */
             font-size: 20px;
             background-color: #49494b;
             color: #8e8e90
@@ -48,7 +47,7 @@
             <br>
             Residental Units in Plat : <span id="plat_id"></span> <br><span id="mansion_plat">Mansion Owner on Plat :
                 <span id="mansion_id"></span></span>
-
+            <span id="misc"></span>
             Walls in Plat : <span id="walls_id"></span> <br>
             NFT in Plat : <span id="nft_id"></span><br>
             <span id="plat_split"></span> * (list below doesnt include non-resolvable ens )
@@ -94,22 +93,28 @@
         const renter = []
         const mansion = []
         let walls = 0;
+        let listingForSale = 0
+        let listingForRent = 0
         console.log(fixed_list)
         let emptyflr = 0;
 
         for (let i = 0; i < fixed_list.buildings.length; i++) {
-
+            if (fixed_list.buildings[i].is_listed_for_rent == true) {
+                listingForRent++
+            }
+            if (fixed_list.buildings[i].is_listed_for_sale == true) {
+                listingForSale++
+            }
             if (fixed_list.buildings[i].type == '2') {
                 owners.push(fixed_list.buildings[i].owner)
-                //owners.push(fixed_list.buidlings[i].owner)
             }
             if (fixed_list.buildings[i].type == '3') {
-
                 mansion.push(fixed_list.buildings[i].owner)
                 mansion_plat.style.display = 'block';
             }
 
             if (fixed_list.buildings[i].type == '5') {
+                //lvr 
                 lvr_id.style.display = 'block';
             }
             if (fixed_list.buildings[i].type == '7') {
@@ -118,17 +123,17 @@
 
             if (fixed_list.buildings[i].type == '8') {
                 walls++;
-                //walls.push(fixed_list.buildings[i].owner)
             }
             if (fixed_list.buildings[i].type == '19') {
+                //postbox
                 pb_id.style.display = 'block';
             }
             if (fixed_list.buildings[i].type == '20') {
+                //Greasery
                 gr_id.style.display = 'block';
             }
             if (fixed_list.buildings[i].renter !== '0x0000000000000000000000000000000000000000') {
                 renter.push(fixed_list.buildings[i].renter)
-
             }
 
         }
@@ -136,7 +141,7 @@
         nft_id.innerHTML = `${fixed_list.all_nfts.length}`
         walls_id.innerHTML = `${walls}`
         output.style.display = 'block'
-
+        misc.innerHTML = `Unit(s) for Sale: ${listingForSale} /`
         if (renter.length !== 0) {
             let count = 0;
             for (const value of renter) {
@@ -144,7 +149,7 @@
                     count++;
                 }
             }
-            plat_split.innerHTML += ` <h4>Renter(s): ${count} / ${renter.length} </h4>`
+            plat_split.innerHTML += ` <h4>Renter(s): ${count}  Units for Rent: ${listingForRent} </h4>`
             const uniqueRenters = [...new Set(renter)];
             //plat_split.innerHTML = `${uniqueRenters.length}`
             for (let i = 0; i < uniqueRenters.length - 1; i++) {
@@ -181,6 +186,7 @@
         owners_html.innerHTML = ''
         renter_html.innerHTML = ''
         plat_split.innerHTML = ''
+        misc.innerHTML = ''
         //console.log(textBox)
         setPage(textBox)
 
