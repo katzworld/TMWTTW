@@ -10,9 +10,10 @@
 <body>
     <h1> Deaths in The Man Who Sold The World Metaverse</h1>
     <h2>
-        <p>total deaths on record <span id="totdeaths"></p> *subject to witness accounts</p>
+        <p>total deaths on record <span id="totdeaths"> *subject to witness accounts</p>
         <br>
-        <input type="text" name="name" id="walletkdr" placeholder="WALLET.ETH">
+        <span id="podium"></span>
+        <input type="text" name="name" id="walletkdr" placeholder="Peep more pacfic ?">
         <button type="button" id="button">K/D ratio!</button>
         <span id="kdr"></span>
     </h2>
@@ -49,12 +50,28 @@
                     'got ghosted',
                     'the count was wrong ',
                     '1st loser',
-                    'wasnt first... clearly last now',
+                    'wasnt first... clearly lost',
                     'Hit it on the first try',
                     'Peep the slow cutter',
                     'went pop like snot bubbles',
                 ]
-
+            // testdata = [
+            //     {
+            //         "victim": "0xfac6b91421ebe1cc176cd50b8458de833fe1720e",
+            //         "killer": "0x7c835cae29c697deee286648aaadecec1cc9a99d",
+            //         "date": "23.03:21:56"
+            //     },
+            //     {
+            //         "victim": "0x7c835cae29c697deee286648aaadecec1cc9a99d",
+            //         "killer": "0xfac6b91421ebe1cc176cd50b8458de833fe1720e",
+            //         "date": "23.03:20:23"
+            //     },
+            //     {
+            //         "victim": "0xfac6b91421ebe1cc176cd50b8458de833fe1720e",
+            //         "killer": "0x7c835cae29c697deee286648aaadecec1cc9a99d",
+            //         "date": "23.03:18:36"
+            //     }
+            // ]
             async function getDeathApi() {
                 const response = await fetch(apiUrl);
                 const data = await response.json();
@@ -68,23 +85,57 @@
                 return data.toLocaleUpperCase() //MFDOOM! ALL CAPS
             }
 
+            function mostOccurringElement(array) {
+                var max = array[0],
+                    counter = {},
+                    i = array.length,
+                    element;
+
+                while (i--) {
+                    element = array[i];
+                    if (!counter[element]) counter[element] = 0;
+                    counter[element]++;
+                    if (counter[max] < counter[element]) max = element;
+                }
+                return max;
+            }
+            function firstLoser(array) {
+                const map = array.reduce((acc, val) => {
+                    if (acc.has(val)) {
+                        acc.set(val, acc.get(val) + 1);
+                    } else {
+                        acc.set(val, 1);
+                    };
+                    return acc;
+                }, new Map);
+                const frequencyArray = Array.from(map);
+                return frequencyArray.sort((a, b) => {
+                    return b[1] - a[1];
+                })[1][0];
+            };
+
             async function setPage() {
                 const fixed_list = await getDeathApi()
                 if (fixed_list.length == 0) { totdeaths.innerText = `no deaths bullets are FREE? api reset` }
                 else {
                     totdeaths.innerText = `${fixed_list.length}`
-
-                    for (let i = 0; i < fixed_list.length - 1; i++) {
-                        //for (let i = 0; i < 10; i++) {
-
+                    //console.log(fixed_list)
+                    const killerlist = []
+                    const viclist = []
+                    for (let i = 0; i < fixed_list.length; i++) {
                         let words = causeOfDeath[Math.floor(Math.random() * causeOfDeath.length)];
                         kdr.innerHTML += "."
                         kdr.style.color = 'red'
                         let vic = await walletRes((fixed_list[i].victim))
                         let killer = await walletRes((fixed_list[i].killer))
+                        killerlist.push(killer)
+                        viclist.push(vic)
                         plotter.innerHTML += `<h2>Victim- ` + vic + ':  ' + words + `</h2>` + `<h4>died on ` + fixed_list[i].date + ` local game time  </h4>` + `<h2>Killer- ` + killer + ': slinging that chopper' + `</h2><hr>`
                     }
+                    podium.innerHTML = `<h2> + Most kills  : ` + mostOccurringElement(killerlist) + ` - 1st loser : ` + firstLoser(killerlist) + ` -- Most deaths : ` + mostOccurringElement(viclist) + `</h2>`
+
                 }
+
                 kdr.innerHTML = ''
                 kdr.style.color = 'blue'
                 inputBox.style.display = 'block'
