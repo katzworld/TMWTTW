@@ -6,167 +6,147 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tooli O'KaT</title>
 </head>
-<style>
-	html,
-	body {
-
-		font-size: 20px;
-		background-color: #49494b;
-		color: #8e8e90
-	}
-
-	h1 {
-		color: #d1bfa7;
-
-	}
-
-	h2 {
-		font-size: 20px;
-		color: #bd8c7d;
-
-	}
-
-	h3 {
-		font-size: 20px;
-		color: #8e8e90;
-
-	}
-
-	a:link {
-		color: #ffcc66;
-		background-color: transparent;
-		text-decoration: none;
-	}
-
-	a:visited {
-		color: #996600;
-		background-color: transparent;
-		text-decoration: none;
-	}
-
-	a:hover {
-		color: #996600;
-		background-color: transparent;
-		text-decoration: underline;
-	}
-
-	a:active {
-		color: #e69900;
-		background-color: transparent;
-		text-decoration: underline;
-	}
-</style>
+<link rel="stylesheet" href="style.css">
 
 <body>
+	<h1>TamperMonkey Plugins for Game Usage</h1><br>
+	<h3><a href='https://github.com/katzworld/WalkingtheWorld-v2' target="_blank">
+			<img src='https://raw.githubusercontent.com/katzworld/WalkingtheWorld-v2/main/5524.png' alt='map overlay'
+				width="400" height="200"><br>
+			PlayUI tampermonkey github
+			page</a><br>
+	</h3>
+	<h3><a href='https://github.com/katzworld/BuilderUI' target="_blank">BuilderUI tampermonkeyscript github
+			page</a><br></h3>
 
-	<H1>Metaverse API Things *</H1><br>
+	<h3><a href='https://play.tmwstw.io/?plot=370' target="_blank"> see the world of Baltimore #370 </a><br>
+	</h3>
+	<h3><a href='https://hyperfy.io/plotas' target="_blank"> wanna see the Control Room </a><br>
+	</h3>
 	<hr>
-	<h2>Trackers of Suffers in the Metaverse</h2>
+
+
+	<H1>API Things *</H1>
+	<hr>
+	<h2>----API----</h2>
 	<h3>
 		<p>API USAGE <br>
-			how to make calls to this api<br>
-			faucet status call  https://api.imamkatz.com/faucet/ plat_id <br> //370
+			<span id="faucet"></span>
+			faucet status call https://api.imamkatz.com/faucet/ plat_id <br> //370
 			<br>
-			returns<br>
-			 
-				 {
-				"id": 370,
-				"bob": 3,
-				"slag": 9,
-				"grease": 0
-				}
+			return example<br>
 
-		</p><br><br>
-		
-	
-	
+			{
+			"id": 370,
+			"bob": 3,
+			"slag": 9,
+			"grease": 0
+			}
+			</span><br>
+			<br>
+			<span id="clock">
+				bob clock status https://clock.imamkatz.com/timesheet
+				<br>
+				return example<br>
+				[
+				19969222,
+				[
+				"1216,254",
+				"7979,831",
+				"1203,4808",
+				"6315,4875",
+				"9795,4919"
+				]
+				]
+				<br>
+				block number,array[plotid,block number countdown]
+			</span>
+
+		</p>
+		<!-- </h3><br <a href="./Tracker/index.html" target="_blank">Metaverse Sufferer</a><br>
+	<a href="./Leaderboard/index.html" target="_blank">LeaderBoard</a><br>
+	<a href="./Leaderboard/leaderboard-notebook.ipynb" target="_blank">Jupiter Notebook to generate data from
+		leaderboard</a><br>
+	</h3><br>
+	<hr> -->
+
+
+
 	</h3><br>
 	<hr>
-	
+
 	<h3>
-		<p>Data is pulled from the api => outputs the current plota <br>
-			with suffers in game (Auto Refresh) Plat Previews are clickable <br>
-			and open to Openseas of asset</p><br><br>
-		<a href="./Tracker/index.html" target="_blank">Metaverse Sufferer</a><br>
-		<a href="./Leaderboard/index.html" target="_blank">LeaderBoard</a><br>
-		<a href="./Leaderboard/leaderboard-notebook.ipynb" target="_blank">Jupiter Notebook to generate data from leaderboard</a><br>
-	</h3><br>
-	<hr>
 
+		<h3>
+			<H2><a href="./clock/index.html" target="_blank">Bob O'Clock</a> <--- page auto refresh 60 sec</H2>
+					<p> Data pulled from blockchain directly from etc chain for the closet block count as possible
+						make your own call to the clock api built with ZIMJS
+						will show you current blocknumber along with faucet status for $bob</p>
 
-	<br>
-	<H2>Death Api</H2><br>
-	<H3>
-		<p>simple Tracker to show the Death API live by the golden die by the golden AK<br>
-			shows last 24hr based on game time (UTC)
-		</p><br>
-		<a href="./Death/index.html" target="_blank">Death Plotter</a><br><br>
-	</H3><br>
-	<hr>
-	<br>
-	<H2>Land Lord</H2><br>
-	<H3>
-		<p>pulling data from the buildrouter about plots you can enter a plat id <br>
-			and it will return some value that might be useful IE List of uniqe owners in plat.</p><br>
-		<a href="./Landlord/index.html" target="_blank">Land Lord</a><br> Check dem Plats<br>
+		</h3>
+		<hr>
+		<H2><a href="./Death/index.html" target="_blank">Death Plotter</a> <---- reset nightly at 0000UTC </H2>
+				<H3>
+					<p>simple Tracker to show the Death API live by the golden die by the golden AK
+						shows last 24hr based on game time (UTC)
+					</p>
 
-	</H3><br>
-	<hr>
+				</H3>
+				<hr>
 
-	<br>
-	<H2>Lottery Oracle</H2><br>
-	<H3>
-		<p>utilizing the API from the King HIMSELF once again<br>
-			outputs the high givers Oracle of the Lottery System<br><br>
-			<a href="./Lottery/index.html" target="_blank">Lottery Oracle</a><br> Check for Today Winning Numbers !!
-	</H3><br></p>
-	<hr>
-	<br>
-	<H2>Bingo Card </H2><br>
-	<H3>
-		<p>Cover the Faucet number on your Bingo Card. All High Givers top of the chart <br>
-			even if you dont have the $ for the unlock you can still play if the faucet has a <br>
-			locked status and you unlock it that will still count! UTC Reset game runs for 24 hours<br>
-			must check in and show POW ie screenshot of card with F12 screen open to verify<br>
-			what are you playing for WHO KNOWS !!! no really what do you want apartments ? <br>
-			Vacants ? $bob $ slag $grease Light Vehicles grab you card from</p><br>
-		<a href="https://app.manifold.xyz/c/svg-bingo" target="_blank">manifold SVG-Bingo</a> get you ticket enjoy the
-		ride<br><br>
-		<a href="./Bingo/index.html" target="_blank">Bingo Card</a> Dabber "FreeSpace"
-	</H3><br>
-	<hr>
+				<H2><a href="./Landlord/index.html" target="_blank">Land Lord</a> Check dem Plats</H2>
+				<H3>
+					<p>pulling data from the buildrouter:3128 about plots you can enter a plat id
+						and it will return some value that might be useful IE List of uniqe owners in plat.</p>
+				</H3>
+				<hr>
+				<H2><a href="./Lottery/index.html" target="_blank">Lottery Oracle</a> Check for Today Winning
+					Numbers !!</H2>
+				<H3>
+					<p>utilizing the API from the King HIMSELF once again<br>
+						outputs the high givers Oracle of the Lottery System<br>
 
-	<H2>Folger Faucet Checker</H2><br>
-	<H3>
-		<p>Good till the last faucet it primed then the page will be retired .. pulls array from api and check again
-			<br>
-			untouch/untapped virgin faucet
-		</p><br>
-		<a href='https://katzworld.github.io/Folgers/' target="_blank">Folgers github</a><br><br>
-	</H3><br>
-	<hr>
+				</H3>
+				<hr>
+				<H2><a href="./Bingo/index.html" target="_blank">Bingo Card</a> *now with freespace Dab</H2>
+				<H3>
+					<p>Cover the Faucet number on your Bingo Card. All High Givers top of the chart <br>
+						even if you dont have the $ for the unlock you can still play if the faucet has a <br>
+						locked status and you unlock it that will still count! UTC Reset game runs for 24 hours<br>
+						must check in and show POW ie screenshot of card with F12 screen open to verify<br>
+						what are you playing for WHO KNOWS !!! no really what do you want apartments ? <br>
+						Vacants ? $bob $ slag $grease Light Vehicles grab you card from</p>
+					<a href="https://app.manifold.xyz/c/svg-bingo" target="_blank">manifold SVG-Bingo</a> get you ticket
+					enjoy the ride<br>
 
-	<br>
-	<H2>Man HUNT! </H2><br>
-	<H3>
-		<p>I hear ya ... bingo not your speed more wanna go out and hunt your bounty no problem<br>
-			check out the bounty program at the ARMS Dealer hood go find a jimmi he is out there ><<br>
-				give me a screeen shot with the plot number and hold the proper paper work <br>
-				happy hunting </p><br>
-		<a href='https://app.manifold.xyz/c/armsdeals' target="_blank">Bounty Hunter Contract</a> <br><br>
-	</H3><br>
-	<hr>
+				</H3>
+				<hr>
 
-	<h1>Overlays Hud for in game usage</h1><br>
-	<h3><a href='https://github.com/katzworld/WalkingtheWorld-v2' target="_blank">Map HuD github page</a><br><br></h3>
-	<h3><a href='https://github.com/katzworld/BuilderUI' target="_blank">BuilderUI HuD github page</a><br><br></h3>
-	<h3><a href='https://hyperfy.io/plotas' target="_blank"> wanna see the Control Room </a><br><br></h3>
+				<H2><a href='https://katzworld.github.io/Folgers/' target="_blank">Folgers github</a>
+					<<< SLOW TO LOAD AT TIMES</H2>
+						<H3>
+							<p>Good till the last faucet it primed then the page will be retired .. pulls array from api
+								and
+								check again
+								<br>
+								untouch/untapped virgin faucet
+							</p>
 
+						</H3>
+						<hr>
 
+						<H2><a href='https://app.manifold.xyz/c/armsdeals' target="_blank">Bounty Hunter
+								Contract</a> Man HUNT!</H2>
+				</H2>
+				<H3>
+					<p>I hear ya ... bingo not your speed more wanna go out and hunt your bounty no problem<br>
+						check out the bounty program at the ARMS Dealer hood go find a jimmi he is out there >
+						<br>
+						give me a screeen shot with the plot number and hold the proper paper work <br>
+						happy hunting
+					</p>
+				</H3>
 
-	<p>
-	<h2>More Projects to be posted here soon</p>
-	</h2>
 </body>
 
 </html>
