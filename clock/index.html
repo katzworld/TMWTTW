@@ -13,13 +13,13 @@
         var TextColors = [black, white, black, white, black, white, black, white, black, white]
         const backgroundcolor = pluck(Colors, true)
         // See Docs under Frame for FIT, FILL, FULL, and TAG
-        new Frame(FIT, 1024, 768, backgroundcolor, dark, ready);
+        new Frame(FULL, 1024, 768, backgroundcolor, dark, ready);
         function ready() {
             zog("ready for Bob o'Clock");
 
             const timer = new Timer({
                 time: 60,
-                borderColor: pluck(Colors),
+                borderColor: pluck(Colors, true),
                 isometric: LEFT,
                 size: 72,
                 bold: true,
@@ -37,7 +37,6 @@
                     this.circle = new Circle(radius, pluck(Colors)).addTo(this).sha(black.toAlpha(.3), 7, 7, 7);
                     this.label = new LabelOnArc("BOB", 20, null, textcolor, radius * .7).center(this);
                     this.circleCenter = new Circle(radius * .6, centerColor).center(this);
-
                     var speed = 2.2;
                     var angle = rand(360);
                     var pos = { x: rand(radius, W - radius), y: rand(radius, H - radius) }
@@ -91,7 +90,6 @@
                 const clocks = new Container().addTo();
                 loop(plats.length, () => {
                     new Bouncer(clocks, pluck(Colors), pluck(TextColors), 100);
-                    // bouncer.text = plats[1][1];
                 });
                 loop(clocks.children, (b, i) => {
                     b.text = 'plat#' + plats[i].split(',')[0] + '    blocks+' + plats[i].split(',')[1];
