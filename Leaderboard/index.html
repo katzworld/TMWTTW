@@ -9,17 +9,42 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>leaderboard</title>
-    <meta name="leaderboard for TMWSTW" content="">
+    <meta name="leaderboard API Query for TMWSTW" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../style.css">
 </head>
 
 <body>
-    <h1>LEADERBOARD</h1>
     <!-- <a href="#0">Dynamic Navigation</a> -->
+    <h2>Enter wallet ID to see stats if logged in Database</h2>
     <input type="text" name="name" id="wallet_ID">
     <button type="button" id="button">Who?</button>
     <div class="container"><span id="output"></span></div>
+    <h3>
+        <p>API USAGE OUTPUT<br>
+            https://api.imamkatz.com/journey?session=qRJT4Bk4Pf0ZF-usD8oTeWWhYEX1ok-j
+        <pre><code>
+        [
+        {
+            "suffer": "katzworld.eth",
+            "lifetime_plotas": "12999",
+            "plota": "120",
+            "check": "0",
+            "session": "qRJT4Bk4Pf0ZF-usD8oTeWWhYEX1ok-j",
+            "timestamp": 1715585038741
+            },
+        {
+        "suffer": "katzworld.eth",
+        "lifetime_plotas": "13000",
+        "plota": "3340",
+        "check": "1",
+        "session": "qRJT4Bk4Pf0ZF-usD8oTeWWhYEX1ok-j",
+        "timestamp": 1715585050341
+        }
+        ]...
+    </pre></code>
+        [SUFFER,LIFETIME_PLOTAS,PLOTA,CHECK,SESSION,TIMESTAMP]
+    </h3>
     <!--[if lt IE 7]>
             <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
