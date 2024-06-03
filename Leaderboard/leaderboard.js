@@ -42,12 +42,13 @@ async function getJourney(session) {
     const timestamp2 = new Date(journeyLog[journeyLog.length - 1].timestamp);
     const difference = timestamp2 - timestamp1;
     let runTime = millisecondsToMinutesAndSeconds(difference)
-    output.innerHTML = `<div class='top'><h2>run for ${journeyLog[0].suffer} ${journeyLog.length - 1} with plat <br>
+
+    output.innerHTML = `
+    <a href="${JourneyapiUrl + session}" target="_blank">Click here for session information from api</a>
+    <div class='top'><h2>run for ${journeyLog[0].suffer} ${journeyLog.length - 1} with plat <br>
     </h2> RunTime : ${runTime} from ${journeyLog[0].plota} to ${journeyLog[journeyLog.length - 1].plota}<br>
     Lifetime: ${journeyLog[journeyLog.length - 1].lifetime_plotas}
     </div>`
-
-
     journeyLog.forEach(element => {
         const localDateTime = new Date(element.timestamp);
         const localDateTimeString = localDateTime.toLocaleString();
@@ -60,8 +61,10 @@ async function getJourney(session) {
 
 async function setSuffer(suffer_ID) {
     const fixed_list = await getSuffer(suffer_ID)
+    output.innerHTML = `<a href="${SufferapiUrl + suffer_ID}" target="_blank">Click here for Suffer id from api</a>`
     fixed_list.forEach((element, i) => {
-        output.innerHTML += `<h2><class id=${i}> session${i} <input type="radio" name=${element.session} id=${i}></span></h2>`
+        output.innerHTML += `
+        <h2><class id=${i}> session${i} <input type="radio" name=${element.session} id=${i}></span></h2>`
         //console.log(element.session)
     });
 }
@@ -83,6 +86,8 @@ button.addEventListener("click", function () {
         output.innerHTML = ''
         const textBox = inputBox.value.toLocaleLowerCase();
         setSuffer(textBox)
+
+
 
     } catch (error) {
         console.error(error)

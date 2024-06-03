@@ -46,3 +46,22 @@ a:active {
     background-color: transparent;
     text-decoration: underline;
 }
+
+pre {
+    margin-left: auto;
+    margin-right: auto;
+    background: #666;
+    /*    border: 1px solid #ddd; */
+    /* border-left: 3px solid #f36d33; */
+    color: #fff;
+    page-break-inside: avoid;
+    font-family: monospace;
+    font-size: 15px;
+    line-height: 1.6;
+    margin-bottom: 1.6em;
+    max-width: 50%;
+    overflow: auto;
+    padding: 1em 1.5em;
+    display: block;
+    word-wrap: break-word;
+}
