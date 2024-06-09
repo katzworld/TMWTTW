@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>PoJak Terminal</title>
+    <meta name="description" content="find your lost shit ? ">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="../style.css">
+    <script type="module">
+        import zim from "https://zimjs.org/cdn/016/zim";
+        new Frame({ ready });
+        function ready() {
+            // make a backing sound but do not play it
+            // the user must first interact at least once with a mousedown/click/tap/change
+            let itemnum = ''
+            const backing = new Aud({ file: "bootup.ogg", loop: true });
+
+            let backingSound; // this will store the sound that is playing
+            // make a Toggle button that starts toggled off
+            new Toggle({ label: "PoJak Heartbeat Signal" })
+                .sca(.7)
+                .pos(30, 30, LEFT, BOTTOM)
+                .change(e => {
+                    // play the sound if it has not played
+                    // and toggle the instance's paused property if it has been played
+                    if (!backingSound) backingSound = backing.play();
+                    else backingSound.paused = !e.target.toggled;
+                });
+            zogg("ready for PoJak signal");
+            const container = new Container().loc(100, 100).addTo(S); // const container = new Container();
+            const lvr_to_find = 'https://clock.imamkatz.com/LVR/';
+
+            function api(item) {
+                async("https://zimjs.org/cdn/jsonp.php?api=" + lvr_to_find + item + "&callback=async.getData", getData);
+            }
+            // pojack signal generator and receiver
+            function pojack() {
+                const image = new Pic("./pojackterm.png")
+                    .addTo(container);
+
+                const label = new Label({
+                    text: "PoJak 0nline",
+                    size: 48,
+                    color: green,
+                }).addTo(container).loc(420, 150);
+                const input = new TextInput(
+                    {
+                        placeholder: "ID#",
+                        inputType: "number",
+                    }
+                ).addTo(container).loc(350, 450); // adds a default input field to the stage
+
+                // });
+                const circleTip = new Tip({
+                    text: "Enter the number",
+                    backgroundColor: white,
+                    color: green,
+                    outside: false,
+                    target: input,
+                    align: CENTER,
+                    valign: BOTTOM,
+                    margin: 14,
+                    corner: 0,
+                    size: 20
+                });
+
+                circleTip.show(5);
+                new Button({ label: "SUBMIT", color: green, }).addTo(container).loc(700, 450).tap(() => {
+                    itemnum = input.text;
+                    api(input.text); // whatever is typed into the LabelInput
+
+                })
+            }
+            function showscreen() {
+                const image = new Pic("./pojackterm.png")
+
+                    .addTo(container);
+
+                const label = new Label({
+                    text: "PoJak online",
+                    size: 48,
+                    color: white
+                }).addTo(container).loc(420, 100);
+
+                const input = new TextInput({ placeholder: "enter text", }).addTo(container).loc(350, 450); // adds a default input field to the stage
+                new Button({ label: "SUBMIT", color: green }).addTo(container).loc(700, 450).tap(() => {
+
+                    api(input.text); // whatever is typed into the LabelInput
+
+                });
+            }
+            function getData(d) {
+
+                container.dispose(); // remove all children from the container
+                S.update();
+                if (d.platnum == '0') {
+                    new Label('requested item #' + itemnum + ' not on ground in world', 64, null, red).addTo(S).center();
+                    new Button({ label: "ReBoot", color: red, }).addTo(S).loc(700, 450).tap(() => {
+                        location.reload();
+                    })
+                    S.update();
+
+                } else {
+                    new Label('X Y Z: ' + d.xyz, 48, null, green).center().mov(0, -300);
+
+                    new Pic('https://meta.tmwstw.io/preview_plots_' + d.platnum + '.jpg').center().tap(() => { zgo('https://play.tmwstw.io/?plot=' + d.platnum, '_blank'); });
+
+
+                    new Button({ label: "ReBoot", color: green, }).center().mov(0, 300).tap(() => {
+                        location.reload();
+                    });
+                    const rightSide = new Container().loc(W - 300, 100).addTo(S);
+                    const leftside = new Container().loc(100, 100).addTo(S)
+                    const label = new Label({
+                        text: "go forth and look in the F12 window of your browser ... under network add a filter for: get_all_assets_in_area ;From there it will refresh as you progress toward your item check frequently till you get the hang of the directions ** if you can stick it on top it helps ***  \n  ",
+                        labelWidth: 200,
+                        size: 24,
+                        color: yellow,
+                    }).addTo(leftside).tap(() => { zgo("./image.png", "_blank"); });
+                    const warning = new Label({
+                        text: "better go get #" + itemnum + " before someone else does \n \n \n KaT",
+                        labelWidth: 200,
+                        size: 36,
+                        color: red,
+                    }).addTo(rightSide).mov(0, 300);
+                    new Button({
+                        label: "ETCScout",
+                        color: green,
+                    }).addTo(leftside).mov(0, 400).tap(() => { zgo("https://etc.blockscout.com/token/0xe9e47cC105063106a86147aB3fb2cD97daD931BF/instance/" + itemnum + "?tab=metadata", "_blank"); })
+                    S.update();
+                }
+
+            }
+            pojack();
+        }
+
+
+    </script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+</head>
+
+<body>
+</body>
+
+</html>
