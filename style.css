@@ -65,3 +65,7 @@ pre {
     display: block;
     word-wrap: break-word;
 }
+
+iframe {
+    pointer-events: none;
+}
