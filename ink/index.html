@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Dip it in the INK Well</title>
+
+    <!-- zimjs.com - JavaScript Canvas Framework -->
+
+    <script type="module">
+        import zim from "https://zimjs.org/cdn/016/zim_game";
+        var Colors = [green, blue, brown, yellow, purple]
+        var TextColors = [black, white, black, white, black, white, black, white, black, white]
+        const backgroundcolor = pluck(Colors, true)
+        // See Docs under Frame for FIT, FILL, FULL, and TAG
+        new Frame(FULL, 1024, 768, backgroundcolor, dark, ready);
+        function ready() {
+            zog("ready for SLAGGIN!");
+
+            const timer = new Timer({
+                time: 60,
+                borderColor: pluck(Colors, true),
+                isometric: LEFT,
+                size: 84,
+                bold: true,
+                borderWidth: 12,
+                height: 350,
+                valign: "middle",
+                align: "center",
+            }).loc(1024, 50);
+
+            const current_timesheet_url = 'https://clock.imamkatz.com/inkwell';
+            const ink_api = 'https://api.tmwstw.io/faucet_state=ink'
+
+            class Bouncer extends Container {
+                constructor(container, centerColor = pluck(Colors), color = pluck(Colors), radius = 75, textcolor) {
+                    super();
+                    this.circle = new Circle(radius, pluck(Colors)).addTo(this).sha(black.toAlpha(.3), 7, 7, 7);
+                    this.label = new LabelOnArc("Grease", 20, null, textcolor, radius * .7).center(this);
+                    this.circleCenter = new Circle(radius * .6, centerColor).center(this);
+                    var speed = 2.2;
+                    var angle = rand(360);
+                    var pos = { x: rand(radius, W - radius), y: rand(radius, H - radius) }
+                    this.loc(pos, null, container);
+                    var dampX = new Damp(pos.x, .07);
+                    var dampY = new Damp(pos.y, .07);
+                    Ticker.add(() => {
+                        var newX = pos.x + speed * Math.cos(angle * RAD);
+                        var newY = pos.y + speed * Math.sin(angle * RAD);
+                        if (newY < radius || newY > H - radius) {
+                            angle = -angle + rand(-6.66, 6.66);
+                        } else if (newX > W - radius || newX < radius) {
+                            angle = 180 - angle + rand(-6.66, 6.66);
+                        } else {
+                            this.loc(dampX.convert(newX), dampY.convert(newY))
+                            pos.x = newX;
+                            pos.y = newY;
+                        }
+                    })
+                    this.cache(-radius, -radius, this.width + 20, this.height + 20);
+                }
+                set centerColor(c) {
+                    this.circleCenter.color = c;
+                    this.updateCache();
+                }
+                set textcolor(t) {
+                    this.label.color = t;
+                    this.label.bold = true;
+                    this.updateCache();
+                }
+                set text(t) {
+                    this.label.text = t;
+                    this.updateCache();
+                }
+                get text() {
+                    return this.label.text;
+                }
+            }
+
+
+            async("https://zimjs.org/cdn/jsonp.php?api=" + current_timesheet_url + "&callback=async.getData", getData);
+
+            var plats = []
+            var blocknum = ''
+            const xpos = rand(W / 3, W.max)
+            const xposoffset = xpos + 50
+            function getData(data) {
+                blocknum = data[0];
+                plats = data[1];
+                new Label('Block Number: ' + blocknum, 64, null, red).rot(rand(-90, 0)).center().mov(+100, 0);
+                const clocks = new Container().addTo();
+                loop(plats.length, () => {
+                    new Bouncer(clocks, pluck(Colors), pluck(TextColors), 100);
+                });
+                loop(clocks.children, (b, i) => {
+                    b.text = 'plat#' + plats[i].split(',')[0] + '    blocks+' + plats[i].split(',')[1];
+
+                    if (plats[i].split(',')[1] < 187) {
+                        b.centerColor = red;
+                        b.textcolor = red;
+                    } else {
+                        if (plats[i].split(',')[1] < 420) {
+                            b.centerColor = orange;
+                            b.textcolor = orange;
+                        }
+                    }
+                });
+            }
+
+            async function get_ink() {
+                const ypos = 50;
+                new Label('ready to harvest ', 16, null, white).pos(xpos, 20);
+                new Label('claimed *', 16, null, black).pos(xposoffset, 35);
+                new Label(' red = 0-187 blocks left till ready', 20, null, red).pos(xposoffset + ypos, 70);
+                new Label(' orange = 188-420 blocks - ~approx 12 sec per block', 20, null, orange).pos(xposoffset + ypos, 90);
+                const response = await fetch(ink_api);
+                const data = await response.json();
+                loop(data, (d, i) => {
+                    // check data for the faucet that is ready to farm
+                    // if there is a 25 value next to the faucet_state=slag then farm it
+                    if (d[1] == 150) {
+                        new Label(d[0], 20, null, white).pos(xpos, ypos + i * 20);
+                    } else {
+                        if (d[1] == 0) {
+                            new Label(d[0], 20, null, black).pos(xposoffset, ypos + i * 20);
+                        }
+                    }
+                })
+            }
+            get_ink();
+        }
+        setInterval(function () {
+            location.reload();
+        }, 60000);
+        // set up the clock;
+    </script>
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+</head>
+
+<body></body>
+
+</html>
