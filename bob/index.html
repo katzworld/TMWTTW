@@ -79,26 +79,26 @@
 
             async("https://zimjs.org/cdn/jsonp.php?api=" + current_timesheet_url + "&callback=async.getData", getData);
 
-            var plats = []
+            var bobplats = []
             var blocknum = ''
             const xpos = rand(W / 3, W.max)
             const xposoffset = xpos + 50
             function getData(data) {
                 blocknum = data[0];
-                plats = data[1];
+                bobplats = data[1];
                 new Label('Block Number: ' + blocknum, 64, null, red).rot(rand(-90, 0)).center().mov(+100, 0);
                 const clocks = new Container().addTo();
-                loop(plats.length, () => {
+                loop(bobplats.length, () => {
                     new Bouncer(clocks, pluck(Colors), pluck(TextColors), 100);
                 });
                 loop(clocks.children, (b, i) => {
-                    b.text = 'plat#' + plats[i].split(',')[0] + '    blocks+' + plats[i].split(',')[1];
+                    b.text = 'plat#' + bobplats[i].split(',')[0] + '    blocks+' + bobplats[i].split(',')[1];
 
-                    if (plats[i].split(',')[1] < 187) {
+                    if (bobplats[i].split(',')[1] < 187) {
                         b.centerColor = red;
                         b.textcolor = red;
                     } else {
-                        if (plats[i].split(',')[1] < 420) {
+                        if (bobplats[i].split(',')[1] < 420) {
                             b.centerColor = orange;
                             b.textcolor = orange;
                         }
