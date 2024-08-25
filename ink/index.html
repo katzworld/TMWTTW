@@ -15,7 +15,7 @@
         // See Docs under Frame for FIT, FILL, FULL, and TAG
         new Frame(FULL, 1024, 768, backgroundcolor, dark, ready);
         function ready() {
-            zog("ready for SLAGGIN!");
+            zog("Dip Dip Ink!");
 
             const timer = new Timer({
                 time: 60,
@@ -36,7 +36,7 @@
                 constructor(container, centerColor = pluck(Colors), color = pluck(Colors), radius = 75, textcolor) {
                     super();
                     this.circle = new Circle(radius, pluck(Colors)).addTo(this).sha(black.toAlpha(.3), 7, 7, 7);
-                    this.label = new LabelOnArc("Grease", 20, null, textcolor, radius * .7).center(this);
+                    this.label = new LabelOnArc("Ink", 20, null, textcolor, radius * .7).center(this);
                     this.circleCenter = new Circle(radius * .6, centerColor).center(this);
                     var speed = 2.2;
                     var angle = rand(360);
