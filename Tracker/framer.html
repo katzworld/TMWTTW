@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="refresh" content="10">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sufferers in Metaverse</title>
+</head>
+
+
+<body>
+    <!-- <h1>Metaverse Sufferer</h1>
+	<hr> -->
+    <div class='container'>
+        <h3><span id="suffer"></span></h3>
+    </div>
+
+    <script type="text/javascript">
+        const apiUrl = 'https://api.tmwstw.io/game_plots_with_players';	// URL to grab this stuff from
+
+        playIt();
+
+        async function getThing() {
+            const xlabels = [];
+            const players = [];
+            const response = await fetch(apiUrl, { mode: 'cors' });
+            const data = await response.json();
+            //console.log(data)
+            for (const [key, value] of Object.entries(data)) {
+                xlabels.push(`${key}`);
+                players.push(`${value}`);
+            }
+            const suffers = Object.values(data).reduce((a, b) => a + b, 0);
+            //console.log(suffers); // 6
+            if (suffers == 0) {
+                suffer.innerHTML = `no suffering to be had`;
+            } else {
+                suffer.innerHTML = `suffers in world ${suffers}`;
+            }
+            return { xlabels, players };
+        };
+
+        async function playIt() {
+            const links = [];
+            const vic = [];
+            const opensea = [];
+            const data = await getThing();
+            //console.log(data.xlabels,data.players);
+            for (let i = 0; i < data.xlabels.length; i++) {
+                const img = document.createElement("img");
+                img.src = `https://meta.tmwstw.io/preview_plots_${data.xlabels[i]}.jpg`;
+                img.width = 100;
+                img.height = 100;
+                document.body.appendChild(img);
+                // vic.push(`occ ${data.players[i]} x `);
+                //suffer.innerHTML += (`${links[i]}`);
+
+            }
+        }
+    </script>
+</body>
+
+</html>
