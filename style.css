@@ -47,6 +47,10 @@ a:active {
     text-decoration: underline;
 }
 
+.collapsible-content {
+    display: none;
+}
+
 pre {
     margin-left: auto;
     margin-right: auto;
