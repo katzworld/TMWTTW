@@ -76,7 +76,6 @@
                 }
             }
 
-
             async("https://zimjs.org/cdn/jsonp.php?api=" + current_timesheet_url + "&callback=async.getData", getData);
 
             var bobplats = []
@@ -85,7 +84,7 @@
             const xposoffset = xpos + 50
             function getData(data) {
                 blocknum = data[0];
-                bobplats = data[1];
+                bobplats = data[1].filter(item => parseInt(item.split(',')[1]) < 420); // Filter items < 420
                 new Label('Block Number: ' + blocknum, 64, null, red).rot(rand(-90, 0)).center().mov(+100, 0);
                 const clocks = new Container().addTo();
                 loop(bobplats.length, () => {
