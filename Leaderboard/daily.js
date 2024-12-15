@@ -1,13 +1,20 @@
 //things to make it work 
 
 //endpoints 
-const etcusd = 'https://clock.imamkatz.com/ETCUSD'
 const lastevent = 'https://clock.imamkatz.com/lastevents'
 const ethResol = 'https://clock.imamkatz.com/address/'
 
-// Function to toggle visibility
+// Function to toggle visibility and close other sections
 function toggleVisibility(id, lookupTable) {
     var element = document.getElementById(id);
+    var sections = document.querySelectorAll('.section'); // Assuming all sections have a class 'section'
+
+    sections.forEach(section => {
+        if (section.id !== id) {
+            section.style.display = 'none';
+        }
+    });
+
     if (element.style.display === 'none' || element.style.display === '') {
         element.style.display = 'block';
         replaceAddresses(element, lookupTable);
@@ -17,14 +24,7 @@ function toggleVisibility(id, lookupTable) {
 }
 
 //get the data
-fetch(etcusd)
-    .then(response => response.json())
-    .then(data => {
-        var currentETCValue = data["ethereum-classic"].usd;
-        currentETCValue = currentETCValue.toFixed(2);
-        document.getElementById('etc-price').innerHTML = currentETCValue;
-    })
-    .catch(error => console.error('Error fetching data:', error));
+
 
 fetch(lastevent)
     .then(response => response.json())
@@ -64,6 +64,7 @@ fetch(lastevent)
             updateTransactionSection('slag', slagThings, lookupTable);
             updateTransactionSection('grease', greaseThings, lookupTable);
             updateTransactionSection('ink', inkThings, lookupTable);
+            outputActiveAddresses(lookupTable);
         });
     })
     .catch(error => console.error('Error fetching data:', error));
@@ -73,15 +74,12 @@ function updateTransactionSection(section, transactions, lookupTable) {
     var toggleButton = document.getElementById(section + '-toggle');
     var contentElement = document.getElementById('last-event-' + section);
 
-    if (transactions.length >= 1) {
-        countElement.innerHTML = '(' + transactions.length + ')';
+    if (transactions.length > 0) {
+        countElement.innerHTML = `(${transactions.length})`;
         toggleButton.style.display = 'inline';
-        transactions.forEach(element => {
-            var transaction_hash = element.transaction_hash;
-            var toAddress = element.to;
-            var resolvedAddress = lookupTable[toAddress] || toAddress;
-            var UrlHash = 'https://etc.blockscout.com/tx/' + transaction_hash;
-            contentElement.innerHTML += '<a href=' + UrlHash + '> ' + section.charAt(0).toUpperCase() + section.slice(1) + ' Transaction  </a><br>';
+        transactions.forEach(({ transaction_hash }) => {
+            var UrlHash = `https://etc.blockscout.com/tx/${transaction_hash}`;
+            contentElement.innerHTML += `<a href="${UrlHash}"> ${section.charAt(0).toUpperCase() + section.slice(1)} Transaction </a><br>`;
         });
     } else {
         countElement.innerHTML = '(0)';
@@ -89,12 +87,10 @@ function updateTransactionSection(section, transactions, lookupTable) {
     }
 }
 
-function replaceAddresses(element, lookupTable) {
-    Object.keys(lookupTable).forEach(toAddress => {
-        var resolvedAddress = lookupTable[toAddress];
-        var elements = element.querySelectorAll(`a[href*="${toAddress}"]`);
-        elements.forEach(link => {
-            link.innerHTML = link.innerHTML.replace(toAddress, resolvedAddress);
-        });
-    });
+// Output the lookupTable to the active-addresses span
+function outputActiveAddresses(lookupTable) {
+    var activeAddressesElement = document.getElementById('active-addresses');
+    // Filter out empty strings and join the remaining values
+    activeAddressesElement.innerHTML = Object.values(lookupTable).filter(address => address).join(', ');
+
 }
