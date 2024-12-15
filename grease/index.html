@@ -28,7 +28,7 @@
                 valign: "middle",
             }).loc(50, 50);
 
-            const current_timesheet_url = 'https://clock.imamkatz.com/greaseindex';
+            const current_timesheet_url = 'https://clock.imamkatz.com/greasemark';
             const slag_api = 'https://api.tmwstw.io/faucet_state=grease'
 
             class Bouncer extends Container {
@@ -84,6 +84,7 @@
             const xposoffset = xpos + 50
             function getData(data) {
                 blocknum = data[0];
+                console.log(data);
                 grease_plats = data[1].filter(item => parseInt(item.split(',')[1]) < 420); // Filter items < 420
                 new Label('Block Number: ' + blocknum, 64, null, red).rot(rand(-90, 0)).center().mov(+100, 0);
                 const clocks = new Container().addTo();
