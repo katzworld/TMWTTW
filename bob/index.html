@@ -110,7 +110,7 @@
                 new Label('ready to harvest ', 16, null, white).pos(xpos, 20);
                 new Label('claimed *', 16, null, black).pos(xposoffset, 35);
                 new Label(' red = 0-187 blocks left till ready', 20, null, red).pos(xposoffset + ypos, 70);
-                new Label(' orange = 188-420 blocks - ~approx 12 sec per block', 20, null, orange).pos(xposoffset + ypos, 90);
+                new Label(' orange = 188-420 blocks ', 20, null, orange).pos(xposoffset + ypos, 90);
                 const response = await fetch(bob_api);
                 const data = await response.json();
                 loop(data, (d, i) => {
