@@ -44,7 +44,7 @@
       color: black !important;
     }
 
-    /* Turn indicator for active players */
+    /* Active turn indicator */
     #playerX.active-turn {
       background-color: purple;
       color: white;
@@ -64,14 +64,14 @@
       color: orange;
     }
 
-    /* Board styles */
+    /* Board styling */
     #board {
       width: 100%;
-      max-width: 100%;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 5px;
       position: relative;
+      /* For overlay positioning */
     }
 
     .cell {
@@ -96,7 +96,7 @@
       color: #000;
     }
 
-    /* Play Again button style (for fallback if overlay is not used) */
+    /* Play Again button styling (if shown separately) */
     #playAgain {
       display: none;
       margin: 1em auto;
@@ -108,6 +108,28 @@
       border-radius: 5px;
       cursor: pointer;
     }
+
+    /* Responsive adjustments for mobile devices */
+    @media (max-width: 480px) {
+      body {
+        padding: 10px;
+        max-width: 100%;
+      }
+
+      #scoreboard p {
+        font-size: 1.5em;
+        padding: 0.3em;
+      }
+
+      .cell {
+        font-size: 1.5em;
+      }
+
+      #playAgain {
+        padding: 8px 16px;
+        font-size: 1.2em;
+      }
+    }
   </style>
 </head>
 
@@ -116,7 +138,7 @@
     <p id="playerX">Score X: <span id="scoreX">0</span></p>
     <p id="playerO">Score O: <span id="scoreO">0</span></p>
   </div>
-  <h1>KiT KaT To3</h1>
+  <h1>TiK KaT To3</h1>
 
   <div id="board"></div>
   <button id="playAgain" onclick="resetGame()">Play Again</button>
@@ -125,8 +147,9 @@
     let boardElement = document.getElementById("board");
     let cells = [];
     let currentPlayer = "X";
-    let nextStartingPlayer = "X"; // Winner of last round goes first next round
+    let nextStartingPlayer = "X"; // Winner of last round goes first in next round
     let gameOver = false;
+    const playAgainBtn = document.getElementById("playAgain");
 
     function initGame() {
       boardElement.innerHTML = "";
@@ -134,8 +157,9 @@
       gameOver = false;
       currentPlayer = nextStartingPlayer;
       updateTurnIndicator();
+      playAgainBtn.style.display = "none";
 
-      // Ensure board container is relative for overlay positioning
+      // Ensure board container is relative for any overlay positioning
       boardElement.style.position = "relative";
 
       for (let i = 0; i < 9; i++) {
@@ -146,7 +170,7 @@
         boardElement.appendChild(cell);
         cells.push(cell);
       }
-      // Remove play again overlay if present
+      // Remove any play again overlay if present
       let overlay = document.getElementById("playAgainOverlay");
       if (overlay) overlay.remove();
     }
@@ -154,7 +178,7 @@
     function handleCellClick(event) {
       if (gameOver) return;
       let cell = event.target;
-      if (cell.textContent !== "") return; // Already played
+      if (cell.textContent !== "") return; // already played
 
       cell.textContent = currentPlayer;
       cell.classList.add(currentPlayer.toLowerCase());
@@ -163,11 +187,10 @@
         gameOver = true;
         alert(currentPlayer + " wins this round!");
         updateScore(currentPlayer);
-        nextStartingPlayer = currentPlayer; // Winner goes first next round
+        nextStartingPlayer = currentPlayer;
         showPlayAgainOverlay();
         return;
       }
-
       // Check for draw
       if (cells.every(cell => cell.textContent !== "")) {
         gameOver = true;
@@ -176,18 +199,14 @@
         return;
       }
 
-      // Next turn
+      // Switch player turn
       currentPlayer = currentPlayer === "X" ? "O" : "X";
       updateTurnIndicator();
     }
 
     function updateTurnIndicator() {
-      document
-        .getElementById("playerX")
-        .classList.toggle("active-turn", currentPlayer === "X");
-      document
-        .getElementById("playerO")
-        .classList.toggle("active-turn", currentPlayer === "O");
+      document.getElementById("playerX").classList.toggle("active-turn", currentPlayer === "X");
+      document.getElementById("playerO").classList.toggle("active-turn", currentPlayer === "O");
     }
 
     function checkWin() {
@@ -201,6 +220,7 @@
         [0, 4, 8],
         [2, 4, 6]
       ];
+
       for (let condition of winConditions) {
         const [a, b, c] = condition;
         if (
@@ -219,7 +239,7 @@
       let newScore = parseInt(scoreElement.textContent, 10) + 1;
       scoreElement.textContent = newScore;
 
-      // Check for best 2 out of 3
+      // Best 2 out of 3 wins the game
       if (newScore >= 2) {
         announceFinalWinner(player);
       }
@@ -237,6 +257,7 @@
       overlay.style.display = "flex";
       overlay.style.justifyContent = "center";
       overlay.style.alignItems = "center";
+      overlay.style.textAlign = "center";
       overlay.style.fontSize = "4em";
       overlay.style.fontWeight = "bold";
       overlay.style.color = "white";
@@ -247,6 +268,7 @@
     }
 
     function showPlayAgainOverlay() {
+      // Create an overlay over the board area with 50% transparency
       let overlay = document.createElement("div");
       overlay.id = "playAgainOverlay";
       overlay.style.position = "absolute";
@@ -260,6 +282,7 @@
       overlay.style.alignItems = "center";
       overlay.style.zIndex = "10";
 
+      // Create Play Again button inside the overlay
       let playAgainButton = document.createElement("button");
       playAgainButton.textContent = "Play Again";
       playAgainButton.style.padding = "10px 20px";
@@ -273,7 +296,6 @@
         overlay.remove();
         resetGame();
       });
-
       overlay.appendChild(playAgainButton);
       boardElement.appendChild(overlay);
     }
