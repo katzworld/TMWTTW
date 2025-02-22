@@ -218,13 +218,9 @@
 
 			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC">$${etcInfo.price} | ` : '';
 
-			// More compact format with minimal spacing
-			return `<span class="ticker-item">
-				${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${data.pool_value} | E:${data.pool_etc} | T:${data[`pool_${tokenName.toLowerCase()}`]} | S:${data.total_stake}
-			</span>`;
+			return `<span class="ticker-item">${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${data.pool_value} | E:${data.pool_etc} | T:${data[`pool_${tokenName.toLowerCase()}`]} | S:${data.total_stake}</span>`;
 		}
 
-		// Fetch and display data for all tokens
 		async function loadTokenData() {
 			const tokens = ['bob', 'grease', 'slag', 'ink'];
 			let tickerContent = '';
@@ -241,13 +237,19 @@
 				}
 
 				if (!tickerContent) {
-					console.warn('No ticker content generated');
 					tickerContent = '<span class="ticker-item">Loading token data...</span>';
 				}
 
-				tickerContent = tickerContent.repeat(2);
+				// Add extra copies to ensure continuous flow
+				tickerContent = tickerContent.repeat(3);
+
 				const tickerElement = document.getElementById('ticker-text');
 				tickerElement.innerHTML = tickerContent;
+
+				// Reset animation
+				tickerElement.style.animation = 'none';
+				tickerElement.offsetHeight; // Trigger reflow
+				tickerElement.style.animation = null;
 			} catch (error) {
 				console.error('Error in loadTokenData:', error);
 				document.getElementById('ticker-text').innerHTML =
@@ -255,9 +257,18 @@
 			}
 		}
 
-		// Load data when the page loads and refresh every minute
+		// Load data and refresh
 		window.onload = () => {
 			loadTokenData();
+			// Refresh data every 60 seconds
+			setInterval(loadTokenData, 60000);
+			// Reset animation every 40 seconds (animation duration)
+			setInterval(() => {
+				const ticker = document.getElementById('ticker-text');
+				ticker.style.animation = 'none';
+				ticker.offsetHeight; // Trigger reflow
+				ticker.style.animation = null;
+			}, 40000);
 		};
 	</script>
 </body>

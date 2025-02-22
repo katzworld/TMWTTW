@@ -83,20 +83,19 @@ iframe {
     height: 40px;
     background: #333;
     overflow: hidden;
-    box-sizing: border-box;
     z-index: 1000;
 }
 
 .ticker {
-    display: inline-block;
+    height: 40px;
+    position: relative;
+    animation: moveLeft 40s linear infinite;
     white-space: nowrap;
-    box-sizing: border-box;
-    animation: ticker 30s linear infinite;
 }
 
 .ticker-item {
     display: inline-block;
-    padding: 0 1rem;
+    padding: 0 2rem;
     color: white;
     font-family: monospace;
     font-size: 14px;
@@ -109,22 +108,12 @@ iframe {
     margin-right: 5px;
 }
 
-@-webkit-keyframes ticker {
+@keyframes moveLeft {
     0% {
-        transform: translateX(100%);
+        transform: translate3d(100%, 0, 0);
     }
 
     100% {
-        transform: translateX(-100%);
-    }
-}
-
-@keyframes ticker {
-    0% {
-        transform: translateX(100%);
-    }
-
-    100% {
-        transform: translateX(-100%);
+        transform: translate3d(-100%, 0, 0);
     }
 }
