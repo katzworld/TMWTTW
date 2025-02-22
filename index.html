@@ -213,13 +213,15 @@
 		function updateTicker(data, etcInfo) {
 			if (!data) return '';
 
-			// Get token name and price from the first key-value pair
 			const tokenName = Object.keys(data)[0];
 			const tokenPrice = data[tokenName];
 
-			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC"> ETC: $${etcInfo.price} | ` : '';
+			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC">$${etcInfo.price} | ` : '';
 
-			return `<span class="ticker-item">${etcPriceDisplay}${tokenName}: ${tokenPrice} | Pool: ${data.pool_value} | ETC: ${data.pool_etc} | Tokens: ${data[`pool_${tokenName.toLowerCase()}`]} | Stake: ${data.total_stake}</span>`;
+			// More compact format with minimal spacing
+			return `<span class="ticker-item">
+				${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${data.pool_value} | E:${data.pool_etc} | T:${data[`pool_${tokenName.toLowerCase()}`]} | S:${data.total_stake}
+			</span>`;
 		}
 
 		// Fetch and display data for all tokens
