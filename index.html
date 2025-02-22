@@ -197,8 +197,11 @@
 				const response = await fetch(url);
 				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 				const data = await response.json();
-				// Check if we have the expected data structure
-				if (!data[token.toUpperCase()]) throw new Error('Invalid data format');
+				console.log(`Raw ${token} data:`, data); // Debug log
+				// Verify we have the required fields instead of checking for token name
+				if (!data.pool_value || !data.pool_etc) {
+					throw new Error('Missing required fields');
+				}
 				return data;
 			} catch (error) {
 				console.error(`Error fetching ${token} data:`, error);
@@ -210,19 +213,13 @@
 		function updateTicker(data, etcInfo) {
 			if (!data) return '';
 
-			// Get token name from the first key (e.g., "BOB", "SLAG", etc.)
+			// Get token name and price from the first key-value pair
 			const tokenName = Object.keys(data)[0];
+			const tokenPrice = data[tokenName];
 
 			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC"> ETC: $${etcInfo.price} | ` : '';
 
-			return `<span class="ticker-item">
-				${etcPriceDisplay}
-				${tokenName}: ${data[tokenName]} | 
-				Pool: ${data.pool_value} | 
-				ETC: ${data.pool_etc} | 
-				Tokens: ${data[`pool_${tokenName.toLowerCase()}`]} | 
-				Stake: ${data.total_stake}
-			</span>`;
+			return `<span class="ticker-item">${etcPriceDisplay}${tokenName}: ${tokenPrice} | Pool: ${data.pool_value} | ETC: ${data.pool_etc} | Tokens: ${data[`pool_${tokenName.toLowerCase()}`]} | Stake: ${data.total_stake}</span>`;
 		}
 
 		// Fetch and display data for all tokens
