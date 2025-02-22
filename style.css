@@ -90,13 +90,15 @@ iframe {
     display: inline-block;
     height: 40px;
     white-space: nowrap;
+    /* Remove extra padding so it starts entirely off-screen on the right */
     animation: ticker 30s linear infinite;
     will-change: transform;
 }
 
 .ticker-item {
     display: inline-block;
-    padding: 0 2rem;
+    /* Reduce horizontal padding to avoid excessive width */
+    padding: 0 1rem;
     color: white;
     font-family: monospace;
     font-size: 14px;
