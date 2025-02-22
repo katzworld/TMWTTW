@@ -90,7 +90,6 @@ iframe {
     display: inline-block;
     height: 40px;
     white-space: nowrap;
-    padding-left: 100%;
     animation: ticker 30s linear infinite;
     will-change: transform;
 }
@@ -112,7 +111,7 @@ iframe {
 
 @keyframes ticker {
     0% {
-        transform: translateX(0);
+        transform: translateX(100%);
     }
 
     100% {

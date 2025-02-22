@@ -269,12 +269,6 @@
 				tickerContent = tickerContent.repeat(4);
 
 				const tickerElement = document.getElementById('ticker-text');
-
-				// Remove and reapply animation
-				tickerElement.style.animation = 'none';
-				tickerElement.offsetHeight; // Force reflow
-				tickerElement.style.animation = 'ticker 30s linear infinite';
-
 				tickerElement.innerHTML = tickerContent;
 			} catch (error) {
 				console.error('Error in loadTokenData:', error);
