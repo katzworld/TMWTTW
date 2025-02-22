@@ -4,10 +4,16 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tooli O'KaT</title>
+	<link rel="stylesheet" href="style.css">
 </head>
-<link rel="stylesheet" href="style.css">
 
 <body>
+	<div class="ticker-wrap">
+		<div class="ticker" id="ticker-text">
+			<!-- Ticker content will be injected here -->
+		</div>
+	</div>
+
 	<h1>TamperMonkey Plugins</h1><br>
 	<h3><a href='https://github.com/katzworld/tMonkey' target="_blank">
 			<img src='https://raw.githubusercontent.com/katzworld/WalkingtheWorld-v2/main/5524.png' alt='map overlay'
@@ -166,6 +172,95 @@
 		</p>
 	</H3>
 
+	<script>
+		// Function to fetch ETC price from new API
+		async function fetchETCPrice() {
+			const url = 'https://etc.blockscout.com/api/v2/stats';
+			try {
+				const response = await fetch(url);
+				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+				const data = await response.json();
+				return {
+					price: Number(data.coin_price).toFixed(2),
+					logo: data.coin_image
+				};
+			} catch (error) {
+				console.error('Error fetching ETC price:', error);
+				return null;
+			}
+		}
+
+		// Function to fetch data from the API
+		async function fetchTokenData(token) {
+			const url = `https://clock.imamkatz.com/Pool/${token}`;
+			try {
+				const response = await fetch(url);
+				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+				const data = await response.json();
+				// Check if we have the expected data structure
+				if (!data[token.toUpperCase()]) throw new Error('Invalid data format');
+				return data;
+			} catch (error) {
+				console.error(`Error fetching ${token} data:`, error);
+				return null;
+			}
+		}
+
+		// Add function to update ticker
+		function updateTicker(data, etcInfo) {
+			if (!data) return '';
+
+			// Get token name from the first key (e.g., "BOB", "SLAG", etc.)
+			const tokenName = Object.keys(data)[0];
+
+			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC"> ETC: $${etcInfo.price} | ` : '';
+
+			return `<span class="ticker-item">
+				${etcPriceDisplay}
+				${tokenName}: ${data[tokenName]} | 
+				Pool: ${data.pool_value} | 
+				ETC: ${data.pool_etc} | 
+				Tokens: ${data[`pool_${tokenName.toLowerCase()}`]} | 
+				Stake: ${data.total_stake}
+			</span>`;
+		}
+
+		// Fetch and display data for all tokens
+		async function loadTokenData() {
+			const tokens = ['bob', 'grease', 'slag', 'ink'];
+			let tickerContent = '';
+
+			try {
+				const etcInfo = await fetchETCPrice();
+
+				for (const token of tokens) {
+					const data = await fetchTokenData(token);
+					if (data) {
+						const tickerItem = updateTicker(data, etcInfo);
+						if (tickerItem) tickerContent += tickerItem;
+					}
+				}
+
+				if (!tickerContent) {
+					console.warn('No ticker content generated');
+					tickerContent = '<span class="ticker-item">Loading token data...</span>';
+				}
+
+				tickerContent = tickerContent.repeat(2);
+				const tickerElement = document.getElementById('ticker-text');
+				tickerElement.innerHTML = tickerContent;
+			} catch (error) {
+				console.error('Error in loadTokenData:', error);
+				document.getElementById('ticker-text').innerHTML =
+					'<span class="ticker-item">Unable to load token data...</span>';
+			}
+		}
+
+		// Load data when the page loads and refresh every minute
+		window.onload = () => {
+			loadTokenData();
+		};
+	</script>
 </body>
 
 </html>
