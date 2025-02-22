@@ -254,16 +254,17 @@
 					tickerContent = '<span class="ticker-item">Loading token data...</span>';
 				}
 
-				// Add extra copies to ensure continuous flow
-				tickerContent = tickerContent.repeat(3);
+				// Repeat content enough times to ensure continuous flow
+				tickerContent = tickerContent.repeat(4);
 
 				const tickerElement = document.getElementById('ticker-text');
-				tickerElement.innerHTML = tickerContent;
 
-				// Reset animation
+				// Remove and reapply animation
 				tickerElement.style.animation = 'none';
-				tickerElement.offsetHeight; // Trigger reflow
-				tickerElement.style.animation = null;
+				tickerElement.offsetHeight; // Force reflow
+				tickerElement.style.animation = 'ticker 30s linear infinite';
+
+				tickerElement.innerHTML = tickerContent;
 			} catch (error) {
 				console.error('Error in loadTokenData:', error);
 				document.getElementById('ticker-text').innerHTML =
@@ -271,18 +272,9 @@
 			}
 		}
 
-		// Load data and refresh
+		// Load data on page load no refresh
 		window.onload = () => {
 			loadTokenData();
-			// Refresh data every 60 seconds
-			setInterval(loadTokenData, 60000);
-			// Reset animation every 40 seconds (animation duration)
-			setInterval(() => {
-				const ticker = document.getElementById('ticker-text');
-				ticker.style.animation = 'none';
-				ticker.offsetHeight; // Trigger reflow
-				ticker.style.animation = null;
-			}, 40000);
 		};
 	</script>
 </body>
