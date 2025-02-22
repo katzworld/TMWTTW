@@ -211,10 +211,12 @@
 				});
 				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 				const data = await response.json();
-				console.log(`Raw ${token} data:`, data); // Debug log
-				// Verify we have the required fields instead of checking for token name
-				if (!data.pool_value || !data.pool_etc) {
-					throw new Error('Missing required fields');
+				console.log(`Raw ${token} data:`, data);
+
+				// Check for the token key (e.g., "BOB", "INK", etc.)
+				const tokenKey = token.toUpperCase();
+				if (!data[tokenKey]) {
+					throw new Error(`Missing ${tokenKey} data`);
 				}
 				return data;
 			} catch (error) {
@@ -227,12 +229,21 @@
 		function updateTicker(data, etcInfo) {
 			if (!data) return '';
 
-			const tokenName = Object.keys(data)[0];
+			// Get the token name (e.g., "BOB", "INK")
+			const tokenName = Object.keys(data).find(key => key === key.toUpperCase());
+			if (!tokenName) return '';
+
 			const tokenPrice = data[tokenName];
+			const poolValue = data.pool_value || 'N/A';
+			const poolEtc = data.pool_etc || 'N/A';
+			const poolTokens = data[`pool_${tokenName.toLowerCase()}`] || 'N/A';
+			const totalStake = data.total_stake || 'N/A';
 
 			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC">$${etcInfo.price} | ` : '';
 
-			return `<span class="ticker-item">${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${data.pool_value} | E:${data.pool_etc} | T:${data[`pool_${tokenName.toLowerCase()}`]} | S:${data.total_stake}</span>`;
+			return `<span class="ticker-item">
+				${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${poolValue} | E:${poolEtc} | T:${poolTokens} | S:${totalStake}
+			</span>`;
 		}
 
 		async function loadTokenData() {
