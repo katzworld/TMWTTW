@@ -8,11 +8,6 @@
 </head>
 
 <body>
-	<div class="ticker-wrap">
-		<div class="ticker" id="ticker-text">
-			<!-- Ticker content will be injected here -->
-		</div>
-	</div>
 
 	<h1>TamperMonkey Plugins</h1><br>
 	<h3><a href='https://github.com/katzworld/tMonkey' target="_blank">
@@ -172,116 +167,6 @@
 		</p>
 	</H3>
 
-	<script>
-		// Function to fetch ETC price from new API
-		async function fetchETCPrice() {
-			const url = 'https://etc.blockscout.com/api/v2/stats';
-			try {
-				const response = await fetch(url, {
-					method: 'GET',
-					mode: 'cors',
-					credentials: 'omit', // Don't send cookies
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-				const data = await response.json();
-				return {
-					price: Number(data.coin_price).toFixed(2),
-					logo: data.coin_image
-				};
-			} catch (error) {
-				console.error('Error fetching ETC price:', error);
-				return null;
-			}
-		}
-
-		// Function to fetch data from the API
-		async function fetchTokenData(token) {
-			const url = `https://clock.imamkatz.com/Pool/${token}`;
-			try {
-				const response = await fetch(url, {
-					method: 'GET',
-					mode: 'cors',
-					credentials: 'omit', // Don't send cookies
-					headers: {
-						'Accept': 'application/json'
-					}
-				});
-				if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-				const data = await response.json();
-				console.log(`Raw ${token} data:`, data);
-
-				// Check for the token key (e.g., "BOB", "INK", etc.)
-				const tokenKey = token.toUpperCase();
-				if (!data[tokenKey]) {
-					throw new Error(`Missing ${tokenKey} data`);
-				}
-				return data;
-			} catch (error) {
-				console.error(`Error fetching ${token} data:`, error);
-				return null;
-			}
-		}
-
-		// Add function to update ticker
-		function updateTicker(data, etcInfo) {
-			if (!data) return '';
-
-			// Get the token name (e.g., "BOB", "INK")
-			const tokenName = Object.keys(data).find(key => key === key.toUpperCase());
-			if (!tokenName) return '';
-
-			const tokenPrice = data[tokenName];
-			const poolValue = data.pool_value || 'N/A';
-			const poolEtc = data.pool_etc || 'N/A';
-			const poolTokens = data[`pool_${tokenName.toLowerCase()}`] || 'N/A';
-			const totalStake = data.total_stake || 'N/A';
-
-			const etcPriceDisplay = etcInfo ? `<img src="${etcInfo.logo}" alt="ETC">$${etcInfo.price} | ` : '';
-
-			return `<span class="ticker-item">
-				${etcPriceDisplay}${tokenName}:${tokenPrice} | P:${poolValue} | E:${poolEtc} | T:${poolTokens} | S:${totalStake}
-			</span>`;
-		}
-
-		async function loadTokenData() {
-			const tokens = ['bob', 'grease', 'slag', 'ink'];
-			let tickerContent = '';
-
-			try {
-				const etcInfo = await fetchETCPrice();
-
-				for (const token of tokens) {
-					const data = await fetchTokenData(token);
-					if (data) {
-						const tickerItem = updateTicker(data, etcInfo);
-						if (tickerItem) tickerContent += tickerItem;
-					}
-				}
-
-				if (!tickerContent) {
-					tickerContent = '<span class="ticker-item">Loading token data...</span>';
-				}
-
-				// Repeat content enough times to ensure continuous flow
-				tickerContent = tickerContent.repeat(4);
-
-				const tickerElement = document.getElementById('ticker-text');
-				tickerElement.innerHTML = tickerContent;
-			} catch (error) {
-				console.error('Error in loadTokenData:', error);
-				document.getElementById('ticker-text').innerHTML =
-					'<span class="ticker-item">Unable to load token data...</span>';
-			}
-		}
-
-		// Load data on page load no refresh
-		window.onload = () => {
-			loadTokenData();
-		};
-	</script>
 </body>
 
 </html>
