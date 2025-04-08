@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metaverse Casino Games</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        body {
+            background-image: url('backcasino.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+        }
+
+        /* Remove the semi-transparent background and add text shadows for readability */
+        .content-wrapper {
+            padding: 20px;
+            margin: 10px;
+        }
+
+        /* Add text shadow to improve readability against the flashy background */
+        h1,
+        h2,
+        h3,
+        p,
+        a {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Special styling for the note at the bottom only */
+        .harvest-note {
+            color: black;
+            text-shadow:
+                -1px -1px 0 white,
+                1px -1px 0 white,
+                -1px 1px 0 white,
+                1px 1px 0 white;
+            font-weight: bold;
+        }
+
+        /* Container layout CSS */
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .left-column {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 20px;
+        }
+
+        .right-column {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .game-section {
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .image-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            min-height: 200px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Casino-inspired flashy ticker styles */
+        .ticker-wrap {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 40px;
+            background: linear-gradient(to right, #000000, #330033, #000000);
+            overflow: hidden;
+            z-index: 1000;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+        }
+
+        .ticker {
+            display: inline-block;
+            height: 40px;
+            white-space: nowrap;
+            padding-right: 100%;
+            animation-name: casinoTicker !important;
+            animation-duration: 60s !important;
+            animation-timing-function: linear !important;
+            animation-iteration-count: infinite !important;
+        }
+
+        /* Create a separate keyframes animation for this page's ticker */
+        @keyframes casinoTicker {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Casino-style animated ticker items */
+        .ticker-item {
+            display: inline-block;
+            padding: 0 1.5rem;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 40px;
+            text-transform: uppercase;
+            border-right: 2px solid rgba(255, 215, 0, 0.3);
+        }
+
+        /* Alternating colors and animations for ticker items */
+        .ticker-item:nth-child(8n+1) {
+            color: #ff0000;
+            animation: neonRed 1.5s ease-in-out infinite alternate;
+        }
+
+        .ticker-item:nth-child(8n+2) {
+            color: #ffcc00;
+            animation: neonGold 1.8s ease-in-out infinite alternate;
+        }
+
+        .ticker-item:nth-child(8n+3) {
+            color: #00ff00;
+            animation: neonGreen 2s ease-in-out infinite alternate;
+        }
+
+        .ticker-item:nth-child(8n+4) {
+            color: #00ffff;
+            animation: neonBlue 1.7s ease-in-out infinite alternate;
+        }
+
+        .ticker-item:nth-child(8n+5) {
+            color: #ff00ff;
+            animation: neonPink 1.9s ease-in-out infinite alternate;
+            font-weight: 900;
+            /* Extra bold for the purple text */
+        }
+
+        .ticker-item:nth-child(8n+6) {
+            color: #ffffff;
+            animation: pulse 1.5s ease-in-out infinite alternate;
+        }
+
+        .ticker-item:nth-child(8n+7) {
+            color: #ff6600;
+            animation: neonOrange 1.6s ease-in-out infinite alternate;
+            font-weight: 900;
+            /* Extra bold for the orange text */
+        }
+
+        .ticker-item:nth-child(8n+8) {
+            color: #ffff00;
+            animation: neonYellow 1.7s ease-in-out infinite alternate;
+        }
+
+        /* Toned down neon glow animations */
+        @keyframes neonRed {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 7px #ff0000;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 5px #ff0000, 0 0 7px #ff0000, 0 0 10px #ff0000;
+            }
+        }
+
+        @keyframes neonGold {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 7px #ffcc00;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 5px #ffcc00, 0 0 7px #ffcc00, 0 0 10px #ffcc00;
+            }
+        }
+
+        @keyframes neonGreen {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 7px #00ff00;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 5px #00ff00, 0 0 7px #00ff00, 0 0 10px #00ff00;
+            }
+        }
+
+        @keyframes neonBlue {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 7px #00ffff;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 5px #00ffff, 0 0 7px #00ffff, 0 0 10px #00ffff;
+            }
+        }
+
+        /* Especially reduced for pink/purple to improve readability */
+        @keyframes neonPink {
+            from {
+                text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #ff00ff;
+            }
+
+            to {
+                text-shadow: 0 0 1px #fff, 0 0 3px #ff00ff, 0 0 5px #ff00ff, 0 0 7px #ff00ff;
+            }
+        }
+
+        /* Especially reduced for orange to improve readability */
+        @keyframes neonOrange {
+            from {
+                text-shadow: 0 0 1px #fff, 0 0 3px #fff, 0 0 5px #ff6600;
+            }
+
+            to {
+                text-shadow: 0 0 1px #fff, 0 0 3px #ff6600, 0 0 5px #ff6600, 0 0 7px #ff6600;
+            }
+        }
+
+        @keyframes neonYellow {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 5px #fff, 0 0 7px #ffff00;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 5px #ffff00, 0 0 7px #ffff00, 0 0 10px #ffff00;
+            }
+        }
+
+        @keyframes pulse {
+            from {
+                text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff;
+            }
+
+            to {
+                text-shadow: 0 0 2px #fff, 0 0 4px #fff, 0 0 6px #fff, 0 0 8px #fff;
+            }
+        }
+
+        /* Casino-themed H2 styling with neon underline - keep only positioning and structure */
+        h2 {
+            font-family: 'Arial', sans-serif;
+            font-size: 28px;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+            position: relative;
+            display: inline-block;
+        }
+
+        /* Keep the neon underline effect */
+        h2::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -8px;
+            width: 100%;
+            height: 3px;
+            background: #f5f5f5;
+            border-radius: 2px;
+            animation: neonUnderline 2s ease-in-out infinite alternate;
+        }
+
+        /* Updated styling for roulette header - keep color and animation but remove other styling */
+        .roulette-header {
+            color: #9933ff;
+        }
+
+        /* Baccarat header color */
+        .baccarat-header {
+            color: #33ccff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ticker-wrap">
+        <div class="ticker" style="animation: casinoTicker 60s linear infinite;">
+            <!-- First set of ticker items -->
+            <div class="ticker-item">ETC METAVERSE CASINO GAMES</div>
+            <div class="ticker-item">PLAY RESPONSIBLY</div>
+            <div class="ticker-item">POWERED BY THE METAVERSE</div>
+            <div class="ticker-item">BACCARAT BOB</div>
+            <div class="ticker-item">GREASELORD ROULETTE</div>
+            <div class="ticker-item">STRAIGHT FROM THE FAUCET</div>
+            <div class="ticker-item">ITS NOT A GAME!</div>
+            <div class="ticker-item">ITS IN THE NAME</div>
+            <div class="ticker-item">YOU MOM PLAYS HERE</div>
+            <div class="ticker-item">LOOK OUT FOR THE NEXT BIG WIN!</div>
+            <div class="ticker-item">TAP DEM FAUCET</div>
+            <div class="ticker-item">BET DAT BOB</div>
+            <div class="ticker-item">GREASE THAT WHEEL</div>
+            <div class="ticker-item">CAN YOU GET A WIN!</div>
+            <div class="ticker-item">HELL YEAH!</div>
+            <div class="ticker-item">YOU WIN!</div>
+
+            <!-- Duplicate all items to create a seamless loop -->
+            <div class="ticker-item">ETC METAVERSE CASINO GAMES</div>
+            <div class="ticker-item">PLAY RESPONSIBLY</div>
+            <div class="ticker-item">POWERED BY THE METAVERSE</div>
+            <div class="ticker-item">BACCARAT BOB</div>
+            <div class="ticker-item">GREASELORD ROULETTE</div>
+            <div class="ticker-item">STRAIGHT FROM THE FAUCET</div>
+            <div class="ticker-item">ITS NOT A GAME!</div>
+            <div class="ticker-item">ITS IN THE NAME</div>
+            <div class="ticker-item">YOU MOM PLAYS HERE</div>
+            <div class="ticker-item">LOOK OUT FOR THE NEXT BIG WIN!</div>
+            <div class="ticker-item">TAP DEM FAUCET</div>
+            <div class="ticker-item">BET DAT BOB</div>
+            <div class="ticker-item">GREASE THAT WHEEL</div>
+            <div class="ticker-item">CAN YOU GET A WIN!</div>
+            <div class="ticker-item">HELL YEAH!</div>
+            <div class="ticker-item">YOU WIN!</div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <h1>Metaverse Casino Games on $ETC</h1>
+
+        <div class="container">
+            <div class="left-column">
+                <div class="game-section">
+                    <h2 class="roulette-header">The Greaselords Roulette</h2>
+                    <p>Try your luck at our Super Greasy GreaseLords Roulette game</p>
+                    <a href="https://roulette.imamkatz.com/" target="_blank">Visit The Greaselords Roulette</a>
+                </div>
+
+                <div class="game-section">
+                    <h2 class="baccarat-header">Baccarat Bob's Palace</h2>
+                    <p>Experience the finest Baccarat game in the Metaverse.</p>
+                    <a href="https://casino.imamkatz.com/" target="_blank">Visit Baccarat Bob's Palace</a>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="image-container">
+                    <!-- Placeholder for Roulette image - you can add a specific image here -->
+                    <img src="https://casino.imamkatz.com/katzvegas.gif" alt="The Greaselords Roulette">
+                </div>
+
+                <!-- <div class="image-container">
+                <img src="" alt="Baccarat Bob's Palace">
+                    </div> -->
+            </div>
+        </div>
+
+        <h3 class="harvest-note">Note: All Game Tokens are Harvestable from the faucet forest of The Man Who Sold The
+            World
+            on the $ETC network</h3>
+    </div>
+</body>
+
+</html>
